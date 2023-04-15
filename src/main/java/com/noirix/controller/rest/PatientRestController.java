@@ -1,4 +1,4 @@
-package com.noirix.controller.mvc;
+package com.noirix.controller.rest;
 
 import com.noirix.controller.requests.PatientCreateRequest;
 import com.noirix.domain.DTO.PatientDTO;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
