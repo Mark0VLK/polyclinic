@@ -44,6 +44,7 @@ public class UserRestController {
         List<User> users = userService.findAll();
 
         return new ResponseEntity<>(users, HttpStatus.OK);
+        //throw new RuntimeException("Huston, we have a problem here!");
     }
 
     @GetMapping(value = "/{id}")
