@@ -1,6 +1,6 @@
 package com.noirix.repository;
 
-import com.noirix.domain.DTO.PatientDTO;
+import com.noirix.domain.dto.PatientDTO;
 import com.noirix.domain.Patient;
 
 public interface PatientRepository extends CRUDRepository <Long, Patient> {

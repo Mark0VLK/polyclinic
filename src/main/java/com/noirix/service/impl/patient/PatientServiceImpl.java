@@ -1,6 +1,6 @@
 package com.noirix.service.impl.patient;
 
-import com.noirix.domain.DTO.PatientDTO;
+import com.noirix.domain.dto.PatientDTO;
 import com.noirix.domain.Patient;
 import com.noirix.repository.PatientRepository;
 import com.noirix.service.PatientService;

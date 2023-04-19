@@ -1,7 +1,7 @@
 package com.noirix.controller.rest;
 
 import com.noirix.controller.requests.PatientCreateRequest;
-import com.noirix.domain.DTO.PatientDTO;
+import com.noirix.domain.dto.PatientDTO;
 import com.noirix.domain.Patient;
 import com.noirix.service.PatientService;
 import lombok.RequiredArgsConstructor;

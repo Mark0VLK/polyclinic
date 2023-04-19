@@ -1,4 +1,4 @@
-package com.noirix.domain.DTO;
+package com.noirix.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.noirix.repository.rowmapper;
 
-import com.noirix.domain.DTO.PatientDTO;
+import com.noirix.domain.dto.PatientDTO;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import java.sql.ResultSet;

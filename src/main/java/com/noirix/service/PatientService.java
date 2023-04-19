@@ -1,6 +1,6 @@
 package com.noirix.service;
 
-import com.noirix.domain.DTO.PatientDTO;
+import com.noirix.domain.dto.PatientDTO;
 import com.noirix.domain.Patient;
 import java.util.List;
 
