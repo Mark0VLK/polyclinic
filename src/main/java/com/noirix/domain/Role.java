@@ -9,19 +9,15 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.sql.Timestamp;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 @Builder
-public class Patient {
-    private Long cardNumber;
-    private String name;
-    private String surname;
-    private String gender;
-    private Timestamp birthDate;
-    private String address;
-    private Long idUser;
-    private Long regionNumber;
+@Data
+public class Role {
+
+    private Long id;
+    private SystemRoles systemRole = SystemRoles.ROLE_USER;
+    private Long userId;
     private Timestamp created;
     private Timestamp changed;
 

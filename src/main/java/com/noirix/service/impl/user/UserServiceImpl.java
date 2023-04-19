@@ -1,5 +1,6 @@
 package com.noirix.service.impl.user;
 
+import com.noirix.domain.Role;
 import com.noirix.domain.User;
 import com.noirix.repository.UserRepository;
 import com.noirix.service.UserService;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,5 +60,17 @@ public class UserServiceImpl implements UserService {
     public Map<String, String> emailAndPhoneNumber() {
         /*Validation layer*/
         return userRepository.emailAndPhoneNumber();
+    }
+
+    @Override
+    public List<Role> getUserAuthorities(Long userId) {
+        /*Validation layer*/
+        return userRepository.getUserAuthorities(userId);
+    }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+        /*Validation layer*/
+        return userRepository.findByLogin(login);
     }
 }

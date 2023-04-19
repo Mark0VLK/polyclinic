@@ -1,4 +1,4 @@
-package com.noirix.repository.impl.patients;
+package com.noirix.repository.impl;
 
 import com.noirix.domain.DTO.PatientDTO;
 import com.noirix.domain.Patient;
@@ -8,7 +8,6 @@ import com.noirix.repository.rowmapper.PatientRowMapperDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -19,7 +18,6 @@ import java.util.List;
 @Primary
 public class PatientRepositoryJdbcTemplateImpl implements PatientRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final PatientRowMapper patientRowMapper;
     private final PatientRowMapperDTO patientRowMapperDTO;
 

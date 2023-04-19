@@ -15,7 +15,7 @@ public class LoggingAspect {
     private static final Logger log = Logger.getLogger(LoggingAspect.class);
     private final Counter counter;
 
-    @Pointcut("execution(* com.noirix.repository.impl.user.UserRepositoryJdbcTemplateImpl.*(..))")
+    @Pointcut("execution(* com.noirix.repository.impl.UserRepositoryJdbcTemplateImpl.*(..))")
     public void aroundRepositoryPointcut() {
     }
 

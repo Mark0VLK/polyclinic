@@ -16,3 +16,9 @@ amazon:
     s3: 123123213
     token: someToken
     password: password
+
+---
+
+jwtconfig:
+  secret: secret
+  expiration: 60000

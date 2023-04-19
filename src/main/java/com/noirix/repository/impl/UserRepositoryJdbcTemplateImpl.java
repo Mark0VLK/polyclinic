@@ -1,13 +1,14 @@
-package com.noirix.repository.impl.user;
+package com.noirix.repository.impl;
 
 import com.noirix.constans.Milliseconds;
+import com.noirix.domain.Role;
 import com.noirix.domain.User;
 import com.noirix.repository.UserRepository;
+import com.noirix.repository.rowmapper.RoleRowMapper;
 import com.noirix.repository.rowmapper.UserRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -22,8 +24,8 @@ import java.util.Map;
 public class UserRepositoryJdbcTemplateImpl implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final UserRowMapper userRowMapper;
+    private final RoleRowMapper roleRowMapper;
 
     @Override
     public User findById(Long id) {
@@ -96,5 +98,17 @@ public class UserRepositoryJdbcTemplateImpl implements UserRepository {
             emailAndPhone.put(email, phone);
         }
         return emailAndPhone;
+    }
+
+    @Override
+    public List<Role> getUserAuthorities(Long userId) {
+        return jdbcTemplate.query("select * from roles inner join users u on u.id = roles.user_id" +
+                " where user_id = " + userId + " order by roles.id desc ", roleRowMapper);
+    }
+
+    @Override
+    public Optional<User> findByLogin(String login) {
+        User user = jdbcTemplate.queryForObject("select * from users where login = '" + login + "'", userRowMapper);
+        return Optional.of(user);
     }
 }
