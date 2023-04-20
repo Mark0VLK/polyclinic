@@ -5,7 +5,7 @@ spring:
       maximum-pool-size: 20
       driver-class-name: org.postgresql.Driver
     username: postgres
-    password: postgres
+    password:
     url: "jdbc:postgresql://localhost:5432/db1?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
     driver-class-name: org.postgresql.Driver
   flyway:
