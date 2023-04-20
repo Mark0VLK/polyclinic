@@ -1,0 +1,16 @@
+INSERT INTO public.users (id, login, password, phone_number, email, passport_series_and_number, created, changed, is_deleted) VALUES (67, 'user_1', '1_e1234e_1', '+375112341', '111wer.1@gmail.com', 'KH1_e1234e4671', '2023-04-16 16:17:58.405804', '2023-04-16 16:17:58.405804', false);
+INSERT INTO public.users (id, login, password, phone_number, email, passport_series_and_number, created, changed, is_deleted) VALUES (70, 'user_21', '11_e1234e_13', '+37549123489', '111wer.102@gmail.com', 'KH35_e1234e4678', '2023-04-16 16:33:06.810363', '2023-04-16 16:33:06.810363', false);
+INSERT INTO public.users (id, login, password, phone_number, email, passport_series_and_number, created, changed, is_deleted) VALUES (71, 'user_12', '42_e1234e_84', '+37572123422', '111wer.46@gmail.com', 'KH56_e1234e46773', '2023-04-16 16:33:13.633717', '2023-04-16 16:33:13.633717', false);
+INSERT INTO public.users (id, login, password, phone_number, email, passport_series_and_number, created, changed, is_deleted) VALUES (72, 'user_20', '65_e1234e_63', '+37537123447', '111wer.37@gmail.com', 'KH73_e1234e46798', '2023-04-16 16:33:38.792854', '2023-04-16 16:33:38.792854', false);
+INSERT INTO public.users (id, login, password, phone_number, email, passport_series_and_number, created, changed, is_deleted) VALUES (73, 'user_105', '51_e1234e_42', '+37548123476', '111wer.99@gmail.com', 'KH98_e1234e46738', '2023-04-16 16:33:39.724757', '2023-04-16 16:33:39.724757', false);
+INSERT INTO public.users (id, login, password, phone_number, email, passport_series_and_number, created, changed, is_deleted) VALUES (74, 'user_14', '9_e1234e_21', '+37563123495', '111wer.26@gmail.com', 'KH38_e1234e467102', '2023-04-16 16:33:40.634370', '2023-04-16 16:33:40.634370', false);
+INSERT INTO public.users (id, login, password, phone_number, email, passport_series_and_number, created, changed, is_deleted) VALUES (65, 'user_65', '68_e1234e_65', '+37568123465', 'user_65.65@gmail.com', 'KH68_e1234e46765', '2023-04-16 15:49:15.043524', '2023-04-16 15:49:15.053379', false);
+INSERT INTO public.users (id, login, password, phone_number, email, passport_series_and_number, created, changed, is_deleted) VALUES (66, 'user_66', '69_e1234e_66', '+37569123466', 'user_66.66@gmail.com', 'KH69_e1234e46766', '2023-04-16 15:49:15.043524', '2023-04-16 15:49:15.053379', false);
+
+INSERT INTO public.roles (id, role_name, user_id, created, changed) VALUES (2, 'ROLE_USER', 65, '2023-04-16 20:42:30.000000', '2023-04-16 20:42:31.000000');
+INSERT INTO public.roles (id, role_name, user_id, created, changed) VALUES (1, 'ROLE_ADMIN', 65, '2023-04-16 20:42:13.000000', '2023-04-16 20:42:14.000000');
+INSERT INTO public.roles (id, role_name, user_id, created, changed) VALUES (3, 'ROLE_USER', 67, '2023-04-16 20:43:01.000000', '2023-04-16 20:43:02.000000');
+
+INSERT INTO public.regions (id, number, address_range, created, is_deleted) VALUES (2, 1, 'qwe', '2023-04-20 00:17:47.000000', false);
+
+INSERT INTO public.patients (card_number, name, surname, gender, birthday_data, address, region_number, created, changed, is_deleted, id_user) VALUES (6, 'Mark', 'Volkonovsky', 'MALE', '2023-04-20 00:16:47.000000', 'O.L. street', 1, '2023-04-20 00:17:17.000000', '2023-04-20 00:17:18.000000', false, 65);
