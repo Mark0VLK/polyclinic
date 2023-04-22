@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public interface HibernateUserService {
 
-    HibernateUser findOne(Long id);
+    HibernateUser findById(Long id);
 
     List<HibernateUser> findAll();
 
     HibernateUser create(HibernateUser object);
 
-    HibernateUser update(Long id, HibernateUser object);
+    HibernateUser update(HibernateUser object);
 
     void delete(Long id);
 

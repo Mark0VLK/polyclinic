@@ -6,7 +6,6 @@ import com.noirix.repository.hibernate.HibernateUserRepository;
 import com.noirix.service.HibernateUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -14,26 +13,26 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HibernateUserServiceImpl implements HibernateUserService {
 
-    private final HibernateUserRepository userRepository;
+    private final HibernateUserRepository hibernateUserRepository;
 
     @Override
-    public HibernateUser findOne(Long id) {
-        return null;
+    public HibernateUser findById(Long id) {
+        return hibernateUserRepository.findById(id);
     }
 
     @Override
     public List<HibernateUser> findAll() {
-        return userRepository.findAll();
+        return hibernateUserRepository.findAll();
     }
 
     @Override
     public HibernateUser create(HibernateUser object) {
-        return null;
+        return hibernateUserRepository.create(object);
     }
 
     @Override
-    public HibernateUser update(Long id, HibernateUser object) {
-        return null;
+    public HibernateUser update(HibernateUser object) {
+        return hibernateUserRepository.update(object);
     }
 
     @Override
