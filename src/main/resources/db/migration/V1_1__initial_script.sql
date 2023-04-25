@@ -43,15 +43,16 @@ create table public.patients
     gender        varchar(20) default 'NOT_SELECTED'::character varying not null,
     birthday_data timestamp(6)                                          not null,
     address       varchar(50)                                           not null,
-    region_number bigint                                                not null
-        constraint patients_regions_number_fk
-            references public.regions (number),
     created       timestamp(6)                                          not null,
     changed       timestamp(6)                                          not null,
     is_deleted    boolean     default false                             not null,
     id_user       bigint                                                not null
         constraint patients_users_id_fk
-            references public.users
+            references public.users,
+    region_number bigint                                                not null
+        constraint patients_regions_number_fk
+            references public.regions (number)
+            on update cascade on delete cascade
 );
 
 alter table public.patients
@@ -158,7 +159,8 @@ alter table public.visits
 create table public.roles
 (
     id        bigserial
-        primary key,
+        primary key
+        unique,
     role_name varchar(100) not null,
     user_id   bigint       not null
         constraint roles_users_id_fk

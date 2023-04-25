@@ -1,25 +1,42 @@
 package com.noirix.domain.hibernate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
+import lombok.Setter;
+import lombok.ToString;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@EqualsAndHashCode(exclude = {
+        "regions", "roles"
+})
+@ToString(exclude = {
+        "regions", "roles"
+})
+@Setter
+@Getter
 @Entity
 @Table(name = "users")
 public class HibernateUser {
@@ -28,22 +45,43 @@ public class HibernateUser {
     @GeneratedValue(generator = "users_id_seq", strategy= GenerationType.SEQUENCE)
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1, initialValue = 100)
     private Long id;
+
     @Column
     private String login;
+
     @Column
+    @JsonIgnore
     private String password;
+
     @Column(name = "phone_number")
     private String phoneNumber;
+
     @Column
     private String email;
+
     @Column(name = "passport_series_and_number")
     private String passportSeriesAndNumber;
-    @Column
+
+    @Column(name = "created")
     private Timestamp created;
-    @Column
+
+    @Column(name = "changed")
     private Timestamp changed;
+
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
+
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("users")
+    private Set<HibernateRegion> regions = Collections.emptySet();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = false)
+    @JsonManagedReference
+    private Set<HibernateRole> roles = Collections.emptySet();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = false)
+    @JsonManagedReference
+    private HibernatePersonalDocument document;
 
     public HibernateUser(Long id, String login, String password, String phoneNumber, String email,
                          String passportSeriesAndNumber) {
@@ -61,9 +99,5 @@ public class HibernateUser {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.passportSeriesAndNumber = passportSeriesAndNumber;
-    }
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 }

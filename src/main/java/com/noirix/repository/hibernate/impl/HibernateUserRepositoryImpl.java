@@ -1,12 +1,12 @@
-package com.noirix.repository.hibernate;
+package com.noirix.repository.hibernate.impl;
 
 import com.noirix.domain.hibernate.HibernateUser;
+import com.noirix.repository.hibernate.HibernateUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
@@ -32,11 +32,6 @@ public class HibernateUserRepositoryImpl implements HibernateUserRepository {
     public List<HibernateUser> findAll() {
 
         final String findAllHQL = "select u from HibernateUser u";
-//        final String findAllNative = "select * from users";
-
-//        try (Session session = sessionFactory.openSession()) {
-//            return session.createQuery(findAllHQL, HibernateUser.class).getResultList();
-//        }
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         return entityManager.createQuery(findAllHQL, HibernateUser.class).getResultList();
     }
