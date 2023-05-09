@@ -11,7 +11,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.noirix</groupId>
+    <groupId>com.volkonovskij</groupId>
     <artifactId>jd2maventest</artifactId>
     <version>1.2-SNAPSHOT</version>
 
@@ -145,7 +145,6 @@
             <artifactId>aspectjrt</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
