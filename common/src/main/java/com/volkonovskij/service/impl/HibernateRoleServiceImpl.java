@@ -5,7 +5,6 @@ import com.volkonovskij.repository.hibernate.HibernateRoleRepository;
 import com.volkonovskij.service.HibernateRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

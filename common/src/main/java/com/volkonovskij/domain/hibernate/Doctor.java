@@ -1,16 +1,11 @@
 package com.volkonovskij.domain.hibernate;
 
-import com.volkonovskij.domain.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -20,11 +15,11 @@ import java.sql.Timestamp;
 @Data
 @Builder
 @Entity
-@Table(name = "patients")
-public class HibernatePatient {
+@Table(name = "doctors")
+public class Doctor {
 
     @Id
-    private Long cardNumber;
+    private Long id;
 
     @Column
     private String name;
@@ -33,20 +28,19 @@ public class HibernatePatient {
     private String surname;
 
     @Column
-    @Enumerated(EnumType.STRING)
-    private Gender gender = Gender.NOT_SELECTED;
-
-    @Column(name = "birthday_data")
-    private Timestamp birthDate;
-
-    @Column
-    private String address;
+    private String office;
 
     @Column(name = "id_user")
     private Long idUser;
 
-    @Column(name = "region_number")
-    private Long regionNumber;
+    @Column(name = "id_specialization")
+    private Long idSpecialization;
+
+    @Column(name = "id_schedule")
+    private Long idSchedule;
+
+    @Column(name = "id_region")
+    private Long idRegion;
 
     @Column
     private Timestamp created;
