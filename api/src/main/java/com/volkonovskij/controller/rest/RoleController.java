@@ -2,17 +2,19 @@ package com.volkonovskij.controller.rest;
 
 import com.volkonovskij.domain.Role;
 import com.volkonovskij.domain.User;
+import com.volkonovskij.domain.hibernate.HibernateRole;
+import com.volkonovskij.domain.hibernate.HibernateUser;
+import com.volkonovskij.repository.springdata.RolesRepository;
 import com.volkonovskij.service.RoleService;
 import com.volkonovskij.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.log4j.Logger;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,13 +26,15 @@ import java.util.Map;
 public class RoleController {
     private final RoleService roleService;
     private final UserService userService;
-    private static final Logger log = Logger.getLogger(RoleController.class);
+
+    private final RolesRepository repository;
+
+    private final ConversionService conversionService;
 
     @GetMapping
-    public ResponseEntity<Map<String, Object>> getAllRoles() {
-
-        List<Role> roles = roleService.findAll();
-        return new ResponseEntity<>(Collections.singletonMap("roles", roles), HttpStatus.OK);
+    public ResponseEntity<Object> getAllRoles() {
+        List<HibernateRole> roles = repository.findAll();
+        return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")

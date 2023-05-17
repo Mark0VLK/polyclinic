@@ -1,6 +1,5 @@
 package com.volkonovskij.domain.hibernate;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +18,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -32,10 +30,10 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(exclude = {
-        "regions", "roles"
+        "roles"
 })
 @ToString(exclude = {
-        "regions", "roles"
+        "roles"
 })
 @Setter
 @Getter
@@ -61,9 +59,6 @@ public class HibernateUser {
     })
     private AuthenticationInfo authenticationInfo;
 
-    @Column(name = "passport_series_and_number")
-    private String passportSeriesAndNumber;
-
     @Column(name = "created")
     private Timestamp created;
 
@@ -73,33 +68,33 @@ public class HibernateUser {
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 
-    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("users")
-    private Set<HibernateRegion> regions = Collections.emptySet();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = false)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<HibernateRole> roles = Collections.emptySet();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = false)
     @JsonManagedReference
-    private HibernatePersonalDocument document;
+    private HibernateDocument document;
 
-    public HibernateUser(Long id, String login, String password, String phoneNumber, String email,
-                         String passportSeriesAndNumber) {
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private HibernatePatient patient;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Doctor doctor;
+
+    public HibernateUser(Long id, String login, String password, String phoneNumber, String email) {
         this.id = id;
         this.login = login;
 //        this.password = password;
         this.phoneNumber = phoneNumber;
 //        this.email = email;
-        this.passportSeriesAndNumber = passportSeriesAndNumber;
     }
-    public HibernateUser(String login, String password, String phoneNumber, String email,
-                String passportSeriesAndNumber) {
+    public HibernateUser(String login, String password, String phoneNumber, String email) {
         this.login = login;
 //        this.password = password;
         this.phoneNumber = phoneNumber;
 //        this.email = email;
-        this.passportSeriesAndNumber = passportSeriesAndNumber;
     }
 }

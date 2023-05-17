@@ -1,6 +1,6 @@
 package com.volkonovskij.domain.hibernate;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -9,14 +9,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.cache.annotation.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -25,10 +26,10 @@ import java.util.Collections;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {
-        "users"
+        "patients", "doctors"
 })
 @ToString(exclude = {
-        "users"
+        "patients", "doctors"
 })
 @Setter
 @Getter
@@ -38,7 +39,8 @@ import java.util.Collections;
 @Table(name = "regions")
 public class HibernateRegion {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "regions_id_seq", strategy= GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "regions_id_seq", sequenceName = "regions_id_seq", allocationSize = 1, initialValue = 10)
     private Long id;
 
     @Column(name = "number")
@@ -53,10 +55,11 @@ public class HibernateRegion {
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 
-    @ManyToMany
-    @JoinTable(name = "patients",
-            joinColumns = @JoinColumn(name = "region_number"),
-            inverseJoinColumns = @JoinColumn(name = "id_user"))
-    @JsonIgnoreProperties("regions")
-    private Set<HibernateUser> users = Collections.emptySet();
+    @OneToMany(mappedBy = "regionNumber", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<HibernatePatient> patients = Collections.emptySet();
+
+    @OneToMany(mappedBy = "regionNumber", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<Doctor> doctors = Collections.emptySet();
 }

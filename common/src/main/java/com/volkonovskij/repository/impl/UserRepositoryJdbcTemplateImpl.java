@@ -39,12 +39,11 @@ public class UserRepositoryJdbcTemplateImpl implements UserRepository {
 
     @Override
     public User create(User user) {
-        jdbcTemplate.update("insert into users(login,password, phone_number, email, passport_series_and_number, created, changed) values(?,?,?,?,?,?,?)",
+        jdbcTemplate.update("insert into users(login,password, phone_number, email, created, changed) values(?,?,?,?,?,?,?)",
                 user.getLogin(),
                 user.getPassword(),
                 user.getPhoneNumber(),
                 user.getEmail(),
-                user.getPassportSeriesAndNumber(),
                 Timestamp.valueOf(LocalDateTime.now()),
                 Timestamp.valueOf(LocalDateTime.now()));
         return user;
@@ -53,12 +52,11 @@ public class UserRepositoryJdbcTemplateImpl implements UserRepository {
     @Override
     public User update(Long id, User user) {
         jdbcTemplate.update("update users set login = ?, password = ?, phone_number = ?, email = ?, " +
-                "passport_series_and_number = ?, changed = ? where id = ? and is_deleted = 'false'",
+                "changed = ? where id = ? and is_deleted = 'false'",
                 user.getLogin(),
                 user.getPassword(),
                 user.getPhoneNumber(),
                 user.getEmail(),
-                user.getPassportSeriesAndNumber(),
                 Timestamp.valueOf(LocalDateTime.now()),
                 id);
 
@@ -102,8 +100,9 @@ public class UserRepositoryJdbcTemplateImpl implements UserRepository {
 
     @Override
     public List<Role> getUserAuthorities(Long userId) {
-        return jdbcTemplate.query("select * from roles inner join users u on u.id = roles.user_id" +
-                " where user_id = " + userId + " order by roles.id desc ", roleRowMapper);
+//        return jdbcTemplate.query("select * from roles inner join users u on u.id = roles.user_id" +
+//                " where user_id = " + userId + " order by roles.id desc ", roleRowMapper);
+        return null;
     }
 
     @Override

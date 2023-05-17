@@ -8,14 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
@@ -32,23 +32,21 @@ import java.sql.Timestamp;
 })
 @Entity
 @Table(name = "personal_doc")
-public class HibernatePersonalDocument {
+public class HibernateDocument {
 
     @Id
+    @GeneratedValue(generator = "personal_doc_id_seq", strategy= GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "personal_doc_id_seq", sequenceName = "personal_doc_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "personal_id")
-    private String personalId;
+    @Column(name = "passport_series")
+    private String passportSeries;
 
-    @Column(name = "document_type")
-    @Enumerated(EnumType.STRING)
-    private DocumentType documentType = DocumentType.NOT_SELECTED;
-
-    @Column(name = "doc_number")
-    private String docNumber;
+    @Column(name = "passport_number")
+    private Long passportNumber;
 
     @Column
-    private Timestamp create;
+    private Timestamp created;
 
     @Column
     private Timestamp changed;

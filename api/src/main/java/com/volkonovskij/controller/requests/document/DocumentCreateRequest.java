@@ -1,4 +1,4 @@
-package com.volkonovskij.controller.requests.patient;
+package com.volkonovskij.controller.requests.document;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,23 +13,14 @@ import java.sql.Timestamp;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Validated
-public class PatientCreateRequest {
+public class DocumentCreateRequest {
 
     @NotNull
-    private String name;
+    private String passportSeries;
 
     @NotNull
-    private String surname;
+    private Long passportNumber;
 
     @NotNull
-    private String gender;
-
-    @NotNull
-    private Timestamp birthDate;
-
-    @NotNull
-    private String address;
-
-    @NotNull
-    private Long regionNumber;
+    private Timestamp expirationDate;
 }

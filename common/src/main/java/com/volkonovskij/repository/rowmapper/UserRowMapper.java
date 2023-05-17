@@ -29,7 +29,6 @@ public class UserRowMapper implements RowMapper<User> {
                     .password(rs.getString(PASSWORD))
                     .phoneNumber(rs.getString(PHONE_NUMBER))
                     .email(rs.getString(EMAIL))
-                    .passportSeriesAndNumber(rs.getString(PASSPORT_SERIES_AND_NUMBER))
                     .created(rs.getTimestamp(CREATED))
                     .changed(rs.getTimestamp(CHANGED))
                     .build();

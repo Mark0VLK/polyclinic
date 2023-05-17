@@ -19,26 +19,21 @@ public class User {
     private String password;
     private String phoneNumber;
     private String email;
-    private String passportSeriesAndNumber;
     private Timestamp created;
     private Timestamp changed;
 
-    public User(Long id, String login, String password, String phoneNumber, String email,
-                String passportSeriesAndNumber) {
+    public User(Long id, String login, String password, String phoneNumber, String email) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.passportSeriesAndNumber = passportSeriesAndNumber;
     }
-    public User(String login, String password, String phoneNumber, String email,
-                String passportSeriesAndNumber) {
+    public User(String login, String password, String phoneNumber, String email) {
         this.login = login;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.passportSeriesAndNumber = passportSeriesAndNumber;
     }
     @Override
     public String toString() {

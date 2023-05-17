@@ -12,7 +12,6 @@ public abstract class UserBaseConverter<S, T> implements Converter<S, T> {
 
         userForUpdate.setLogin(request.getLogin());
         userForUpdate.setPhoneNumber(request.getPhoneNumber());
-        userForUpdate.setPassportSeriesAndNumber(request.getPassportSeriesAndNumber());
         userForUpdate.setChanged(Timestamp.valueOf(LocalDateTime.now()));
 
         return userForUpdate;

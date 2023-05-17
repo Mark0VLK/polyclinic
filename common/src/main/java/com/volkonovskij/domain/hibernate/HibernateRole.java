@@ -36,7 +36,7 @@ public class HibernateRole {
 
     @Id
     @GeneratedValue(generator = "roles_id_seq", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "roles_id_seq", sequenceName = "roles_id_seq", allocationSize = 1, initialValue = 100)
+    @SequenceGenerator(name = "roles_id_seq", sequenceName = "roles_id_seq", allocationSize = 1, initialValue = 10)
     private Long id;
 
     @Column(name = "role_name")

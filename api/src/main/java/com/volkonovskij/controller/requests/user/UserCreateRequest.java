@@ -27,7 +27,4 @@ public class UserCreateRequest {
 
     @NotNull
     private String email;
-
-    @NotNull
-    private String passportSeriesAndNumber;
 }

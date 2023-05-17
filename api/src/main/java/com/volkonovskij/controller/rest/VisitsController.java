@@ -1,11 +1,8 @@
 package com.volkonovskij.controller.rest;
 
 import com.volkonovskij.controller.exceptions.IllegalRequestException;
-import com.volkonovskij.controller.requests.user.UserCreateRequest;
-import com.volkonovskij.controller.requests.user.UserUpdateRequest;
 import com.volkonovskij.controller.requests.visit.VisitCreateRequest;
 import com.volkonovskij.controller.requests.visit.VisitUpdateRequest;
-import com.volkonovskij.domain.hibernate.HibernateUser;
 import com.volkonovskij.domain.hibernate.Visit;
 import com.volkonovskij.repository.springdata.VisitsRepository;
 import lombok.RequiredArgsConstructor;
