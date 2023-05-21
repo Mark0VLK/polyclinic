@@ -69,8 +69,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> findByEmail(String email) {
         /*Validation layer*/
-        return userRepository.findByLogin(login);
+        return userRepository.findByEmail(email);
     }
 }

@@ -11,5 +11,5 @@ public interface UserRepository extends CRUDRepository <Long, User> {
     List<User> changedOverTime(int numberOfDays);
     Map<String, String> emailAndPhoneNumber();
     List<Role> getUserAuthorities(Long userId);
-    Optional<User> findByLogin(String login);
+    Optional<User> findByEmail(String email);
 }

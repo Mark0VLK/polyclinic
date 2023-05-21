@@ -19,5 +19,5 @@ public interface UserService {
     List<User> changedOverTime(int number_of_days);
     Map<String, String> emailAndPhoneNumber();
     List<Role> getUserAuthorities(Long userId);
-    Optional<User> findByLogin(String email);
+    Optional<User> findByEmail(String email);
 }

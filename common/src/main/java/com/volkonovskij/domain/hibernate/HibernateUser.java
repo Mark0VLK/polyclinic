@@ -55,7 +55,7 @@ public class HibernateUser {
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "email", column = @Column(name = "email")),
-            @AttributeOverride(name = "password", column = @Column(name = "password"))
+            @AttributeOverride(name = "userPassword", column = @Column(name = "user_password"))
     })
     private AuthenticationInfo authenticationInfo;
 

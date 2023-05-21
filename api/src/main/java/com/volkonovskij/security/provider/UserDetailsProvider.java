@@ -23,12 +23,12 @@ public class UserDetailsProvider implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            Optional<User> searchResult = userService.findByLogin(username);
+            Optional<User> searchResult = userService.findByEmail(username);
 
             if (searchResult.isPresent()) {
                 User user = searchResult.get();
                 return new org.springframework.security.core.userdetails.User(
-                        user.getLogin(),
+                        user.getEmail(),
                         user.getPassword(),
 //                        ["ROLE_USER", "ROLE_ADMIN"]
                         AuthorityUtils.commaSeparatedStringToAuthorityList(
@@ -40,7 +40,7 @@ public class UserDetailsProvider implements UserDetailsService {
                         )
                 );
             } else {
-                throw new UsernameNotFoundException(String.format("No user found with login '%s'.", username));
+                throw new UsernameNotFoundException(String.format("No user found with email '%s'.", username));
             }
         } catch (Exception e) {
             throw new UsernameNotFoundException("User with this login not found");

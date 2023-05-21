@@ -5,13 +5,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import static com.volkonovskij.repository.columns.UserColumns.CHANGED;
 import static com.volkonovskij.repository.columns.UserColumns.CREATED;
 import static com.volkonovskij.repository.columns.UserColumns.EMAIL;
 import static com.volkonovskij.repository.columns.UserColumns.ID;
 import static com.volkonovskij.repository.columns.UserColumns.LOGIN;
-import static com.volkonovskij.repository.columns.UserColumns.PASSPORT_SERIES_AND_NUMBER;
 import static com.volkonovskij.repository.columns.UserColumns.PASSWORD;
 import static com.volkonovskij.repository.columns.UserColumns.PHONE_NUMBER;
 

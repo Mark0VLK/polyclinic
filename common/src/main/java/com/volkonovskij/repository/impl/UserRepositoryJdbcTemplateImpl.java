@@ -39,7 +39,7 @@ public class UserRepositoryJdbcTemplateImpl implements UserRepository {
 
     @Override
     public User create(User user) {
-        jdbcTemplate.update("insert into users(login,password, phone_number, email, created, changed) values(?,?,?,?,?,?,?)",
+        jdbcTemplate.update("insert into users(login,user_password, phone_number, email, created, changed) values(?,?,?,?,?,?,?)",
                 user.getLogin(),
                 user.getPassword(),
                 user.getPhoneNumber(),
@@ -51,7 +51,7 @@ public class UserRepositoryJdbcTemplateImpl implements UserRepository {
 
     @Override
     public User update(Long id, User user) {
-        jdbcTemplate.update("update users set login = ?, password = ?, phone_number = ?, email = ?, " +
+        jdbcTemplate.update("update users set login = ?, user_password = ?, phone_number = ?, email = ?, " +
                 "changed = ? where id = ? and is_deleted = 'false'",
                 user.getLogin(),
                 user.getPassword(),
@@ -100,14 +100,19 @@ public class UserRepositoryJdbcTemplateImpl implements UserRepository {
 
     @Override
     public List<Role> getUserAuthorities(Long userId) {
-//        return jdbcTemplate.query("select * from roles inner join users u on u.id = roles.user_id" +
-//                " where user_id = " + userId + " order by roles.id desc ", roleRowMapper);
-        return null;
+       final String sqlQueryAuthorities =
+                "select * " +
+                        " from roles " +
+                        " inner join users u on u.id = roles.user_id" +
+                        " where user_id = " + userId +
+                        " order by roles.id desc";
+
+        return jdbcTemplate.query(sqlQueryAuthorities, roleRowMapper);
     }
 
     @Override
-    public Optional<User> findByLogin(String login) {
-        User user = jdbcTemplate.queryForObject("select * from users where login = '" + login + "'", userRowMapper);
+    public Optional<User> findByEmail(String email) {
+        User user = jdbcTemplate.queryForObject("select * from users where email = '" + email + "'", userRowMapper);
         return Optional.of(user);
     }
 }

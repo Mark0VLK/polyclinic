@@ -8,10 +8,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(AuthenticationInfo.class)
 public abstract class AuthenticationInfo_ {
 
-	public static volatile SingularAttribute<AuthenticationInfo, String> password;
+	public static volatile SingularAttribute<AuthenticationInfo, String> userPassword;
 	public static volatile SingularAttribute<AuthenticationInfo, String> email;
 
-	public static final String PASSWORD = "password";
+	public static final String USER_PASSWORD = "userPassword";
 	public static final String EMAIL = "email";
 
 }

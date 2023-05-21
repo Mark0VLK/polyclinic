@@ -15,7 +15,7 @@ import javax.persistence.Embeddable;
 public class AuthenticationInfo {
 
     @JsonIgnore
-    private String password;
+    private String userPassword;
 
     private String email;
 }

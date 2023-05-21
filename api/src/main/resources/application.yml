@@ -1,4 +1,5 @@
 spring:
+#  main.allow-circular-references: true
   datasource:
     hikari:
       jdbc-url: "jdbc:postgresql://localhost:5432/db1?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
@@ -26,14 +27,6 @@ spring:
         format_sql: true
 ---
 
-amazon:
-  images:
-    s3: 123123213
-    token: someToken
-    password: password
-
----
-
 jwtconfig:
   secret: qgsdbcsh76
-  expiration: 60000
+  expiration: 6000000
