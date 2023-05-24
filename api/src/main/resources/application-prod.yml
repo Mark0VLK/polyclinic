@@ -1,0 +1,15 @@
+spring:
+  include: default
+  datasource:
+    hikari:
+      jdbc-url: "jdbc:postgresql://localhost:5432/production-db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
+      maximum-pool-size: 100
+    url: "jdbc:postgresql://localhost:5432/production-db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
+    jpa:
+      show-sql: false
+
+---
+
+jwtconfig:
+  secret: prod_secret
+  expiration: 6000000

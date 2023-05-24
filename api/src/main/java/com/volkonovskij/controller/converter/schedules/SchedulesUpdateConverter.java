@@ -6,6 +6,8 @@ import com.volkonovskij.exception.EntityNotFoundException;
 import com.volkonovskij.repository.springdata.SchedulesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -17,7 +19,8 @@ public class SchedulesUpdateConverter extends SchedulesBaseConverter<SchedulesUp
     @Override
     public Schedule convert(SchedulesUpdateRequest source) {
 
-        Optional<Schedule> patient = repository.findById(source.getId());
-        return doConvert(patient.orElseThrow(EntityNotFoundException::new), source);
+        Optional<Schedule> schedule = repository.findById(source.getId());
+        schedule.orElseThrow(EntityNotFoundException::new).setChanged(Timestamp.valueOf(LocalDateTime.now()));
+        return doConvert(schedule.orElseThrow(EntityNotFoundException::new), source);
     }
 }

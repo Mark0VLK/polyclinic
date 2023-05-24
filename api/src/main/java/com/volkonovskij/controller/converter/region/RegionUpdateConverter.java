@@ -6,7 +6,6 @@ import com.volkonovskij.exception.EntityNotFoundException;
 import com.volkonovskij.repository.springdata.RegionsDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 
 @Component
@@ -16,9 +15,9 @@ public class RegionUpdateConverter extends RegionBaseConverter<RegionUpdateReque
     private final RegionsDataRepository repository;
 
     @Override
-    public HibernateRegion convert(RegionUpdateRequest source) {
+    public HibernateRegion convert(RegionUpdateRequest request) {
 
-        Optional<HibernateRegion> region = repository.findById(source.getId());
-        return doConvert(region.orElseThrow(EntityNotFoundException::new), source);
+        Optional<HibernateRegion> region = repository.findById(request.getId());
+        return doConvert(region.orElseThrow(EntityNotFoundException::new), request);
     }
 }

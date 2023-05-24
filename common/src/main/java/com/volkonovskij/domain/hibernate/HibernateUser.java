@@ -68,33 +68,19 @@ public class HibernateUser {
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<HibernateRole> roles = Collections.emptySet();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = false)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private HibernateDocument document;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private HibernatePatient patient;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Doctor doctor;
-
-    public HibernateUser(Long id, String login, String password, String phoneNumber, String email) {
-        this.id = id;
-        this.login = login;
-//        this.password = password;
-        this.phoneNumber = phoneNumber;
-//        this.email = email;
-    }
-    public HibernateUser(String login, String password, String phoneNumber, String email) {
-        this.login = login;
-//        this.password = password;
-        this.phoneNumber = phoneNumber;
-//        this.email = email;
-    }
 }

@@ -6,6 +6,8 @@ import com.volkonovskij.exception.EntityNotFoundException;
 import com.volkonovskij.repository.springdata.DocumentsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -15,9 +17,10 @@ public class DocumentUpdateConverter extends DocumentBaseConverter<DocumentUpdat
     private final DocumentsRepository repository;
 
     @Override
-    public HibernateDocument convert(DocumentUpdateRequest source) {
+    public HibernateDocument convert(DocumentUpdateRequest request) {
 
-        Optional<HibernateDocument> document = repository.findById(source.getId());
-        return doConvert(document.orElseThrow(EntityNotFoundException::new), source);
+        Optional<HibernateDocument> document = repository.findById(request.getId());
+        document.orElseThrow(EntityNotFoundException::new).setChanged(Timestamp.valueOf(LocalDateTime.now()));
+        return doConvert(document.orElseThrow(EntityNotFoundException::new), request);
     }
 }

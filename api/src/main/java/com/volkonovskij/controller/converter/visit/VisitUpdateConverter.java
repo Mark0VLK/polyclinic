@@ -6,6 +6,8 @@ import com.volkonovskij.exception.EntityNotFoundException;
 import com.volkonovskij.repository.springdata.VisitsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -18,6 +20,7 @@ public class VisitUpdateConverter extends VisitBaseConverter<VisitUpdateRequest,
     public Visit convert(VisitUpdateRequest source) {
 
         Optional<Visit> visit = repository.findById(source.getId());
+        visit.orElseThrow(EntityNotFoundException::new).setChanged(Timestamp.valueOf(LocalDateTime.now()));
         return doConvert(visit.orElseThrow(EntityNotFoundException::new), source);
     }
 }

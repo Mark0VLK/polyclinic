@@ -85,7 +85,7 @@ public class HibernatePatient {
     @JsonBackReference
     private HibernateRegion regionNumber;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<Visit> visits = Collections.emptySet();
 }

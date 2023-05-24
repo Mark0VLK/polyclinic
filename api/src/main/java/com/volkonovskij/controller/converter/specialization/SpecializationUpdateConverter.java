@@ -6,6 +6,8 @@ import com.volkonovskij.exception.EntityNotFoundException;
 import com.volkonovskij.repository.springdata.SpecializationsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -17,7 +19,8 @@ public class SpecializationUpdateConverter extends SpecializationBaseConverter<S
     @Override
     public Specialization convert(SpecializationUpdateRequest source) {
 
-        Optional<Specialization> patient = repository.findById(source.getId());
-        return doConvert(patient.orElseThrow(EntityNotFoundException::new), source);
+        Optional<Specialization> specialization = repository.findById(source.getId());
+        specialization.orElseThrow(EntityNotFoundException::new).setChanged(Timestamp.valueOf(LocalDateTime.now()));
+        return doConvert(specialization.orElseThrow(EntityNotFoundException::new), source);
     }
 }

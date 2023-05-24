@@ -4,7 +4,6 @@ import com.volkonovskij.controller.requests.document.DocumentCreateRequest;
 import com.volkonovskij.domain.hibernate.HibernateDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 

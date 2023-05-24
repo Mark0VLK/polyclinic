@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    include: default
+
+---
+
+jwtconfig:
+  secret: application_test
+  expiration: 6000000

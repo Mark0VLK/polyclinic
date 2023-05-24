@@ -45,6 +45,9 @@ public class HibernateDocument {
     @Column(name = "passport_number")
     private Long passportNumber;
 
+    @Column(name = "identification_no")
+    private String identificationNo;
+
     @Column
     private Timestamp created;
 

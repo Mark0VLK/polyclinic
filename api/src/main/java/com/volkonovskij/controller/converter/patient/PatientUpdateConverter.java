@@ -6,7 +6,8 @@ import com.volkonovskij.exception.EntityNotFoundException;
 import com.volkonovskij.repository.springdata.PatientsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -16,9 +17,10 @@ public class PatientUpdateConverter extends PatientBaseConverter<PatientUpdateRe
     private final PatientsRepository repository;
 
     @Override
-    public HibernatePatient convert(PatientUpdateRequest source) {
+    public HibernatePatient convert(PatientUpdateRequest request) {
 
-        Optional<HibernatePatient> patient = repository.findById(source.getCardNumber());
-        return doConvert(patient.orElseThrow(EntityNotFoundException::new), source);
+        Optional<HibernatePatient> patient = repository.findById(request.getCardNumber());
+        patient.orElseThrow(EntityNotFoundException::new).setChanged(Timestamp.valueOf(LocalDateTime.now()));
+        return doConvert(patient.orElseThrow(EntityNotFoundException::new), request);
     }
 }

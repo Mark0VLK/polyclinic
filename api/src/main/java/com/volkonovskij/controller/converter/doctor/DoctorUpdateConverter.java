@@ -6,6 +6,8 @@ import com.volkonovskij.exception.EntityNotFoundException;
 import com.volkonovskij.repository.springdata.DoctorsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -15,9 +17,10 @@ public class DoctorUpdateConverter extends DoctorBaseConverter<DoctorUpdateReque
     private final DoctorsRepository repository;
 
     @Override
-    public Doctor convert(DoctorUpdateRequest source) {
+    public Doctor convert(DoctorUpdateRequest request) {
 
-        Optional<Doctor> doctor = repository.findById(source.getId());
-        return doConvert(doctor.orElseThrow(EntityNotFoundException::new), source);
+        Optional<Doctor> doctor = repository.findById(request.getId());
+        doctor.orElseThrow(EntityNotFoundException::new).setChanged(Timestamp.valueOf(LocalDateTime.now()));
+        return doConvert(doctor.orElseThrow(EntityNotFoundException::new), request);
     }
 }

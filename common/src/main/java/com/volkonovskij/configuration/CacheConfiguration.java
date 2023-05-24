@@ -12,7 +12,7 @@ public class CacheConfiguration {
 
     @Bean
     public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager("regions");
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager("regions", "roles", "schedules", "specializations", "personal_doc");
         cacheManager.setCaffeine(cacheProperties());
         return cacheManager;
     }
