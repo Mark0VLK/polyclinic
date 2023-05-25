@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/springdata/specializations")
@@ -78,6 +80,27 @@ public class SpecializationsController {
     }
 
     @Operation(
+            summary = "Find a specialization",
+            description = "Find the specialization by its id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Specialization",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Specialization.class))
+                    )
+            }
+    )
+    @GetMapping("/{specializationId}")
+    public ResponseEntity<Object> getSpecializationById(@Parameter(name = "specializationId", example = "1", required = true) @PathVariable Long specializationId) {
+
+        Optional<Specialization> specialization = specializationsRepository.findById(specializationId);
+
+        return new ResponseEntity<>(specialization, HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "Search for all active specializations",
             description = "Search for all active specializations",
             responses = {
@@ -121,5 +144,15 @@ public class SpecializationsController {
         specialization = specializationsRepository.save(specialization);
 
         return new ResponseEntity<>(specialization, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Object> deleteUser(@RequestBody SpecializationUpdateRequest request) {
+
+        Specialization specialization = conversionService.convert(request, Specialization.class);
+
+        specializationsRepository.delete(specialization);
+
+        return new ResponseEntity<>(specialization, HttpStatus.CREATED);
     }
 }

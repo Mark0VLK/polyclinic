@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/springdata/users")
@@ -80,6 +82,27 @@ public class UserDataController {
     }
 
     @Operation(
+            summary = "Find a user",
+            description = "Find the user by his id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded User",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = HibernateUser.class))
+                    )
+            }
+    )
+    @GetMapping("/{userId}")
+    public ResponseEntity<Object> getUserById(@Parameter(name = "userId", example = "1", required = true) @PathVariable Long userId) {
+
+        Optional<HibernateUser> user = userRepository.findById(userId);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "Search for all active users",
             description = "Search for all active users",
             responses = {
@@ -93,7 +116,7 @@ public class UserDataController {
             }
     )
     @GetMapping("/active")
-    public ResponseEntity<Object> findAllVisibleUserss() {
+    public ResponseEntity<Object> findAllVisibleUsers() {
 
         Map<String, List<HibernateUser>> users = Collections.singletonMap("result", userRepository.findByIsDeletedIsFalse());
 
@@ -132,5 +155,15 @@ public class UserDataController {
         List<HibernateUser> result = userRepository.findByLogin(login);
 
         return new ResponseEntity<>(Collections.singletonMap("result", result), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Object> deleteUser(@RequestBody UserUpdateRequest request) {
+
+        HibernateUser user = conversionService.convert(request, HibernateUser.class);
+
+        userRepository.delete(user);
+
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 }

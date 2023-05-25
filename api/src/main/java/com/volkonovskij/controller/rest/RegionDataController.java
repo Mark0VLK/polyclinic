@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/springdata/regions")
@@ -78,6 +80,27 @@ public class RegionDataController {
     }
 
     @Operation(
+            summary = "Find the region",
+            description = "Find the region by id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Region",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = HibernateRegion.class))
+                    )
+            }
+    )
+    @GetMapping("/{regionId}")
+    public ResponseEntity<Object> getRegionById(@Parameter(name = "regionId", example = "1", required = true) @PathVariable Long regionId) {
+
+        Optional<HibernateRegion> region = regionsRepository.findById(regionId);
+
+        return new ResponseEntity<>(region, HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "Search for all active regions",
             description = "Search for all active regions",
             responses = {
@@ -121,5 +144,15 @@ public class RegionDataController {
         region = regionsRepository.save(region);
 
         return new ResponseEntity<>(region, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Object> deleteRegion(@RequestBody RegionUpdateRequest request) {
+
+        HibernateRegion region = conversionService.convert(request, HibernateRegion.class);
+
+        regionsRepository.delete(region);
+
+        return new ResponseEntity<>(region, HttpStatus.CREATED);
     }
 }

@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/springdata/roles")
@@ -79,6 +79,27 @@ public class RoleController {
                 rolesRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Find the user role",
+            description = "Identify the role by its id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Role",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = HibernateRole.class))
+                    )
+            }
+    )
+    @GetMapping("/{roleId}")
+    public ResponseEntity<Object> getRoleById(@Parameter(name = "roleId", example = "1", required = true) @PathVariable Long roleId) {
+
+        Optional<HibernateRole> role = rolesRepository.findById(roleId);
+
+        return new ResponseEntity<>(role, HttpStatus.OK);
+    }
+
     @GetMapping("/{userId}")
     public ResponseEntity<Map<String, Object>> getUsersAuthorities(@PathVariable Long userId) {
 
@@ -91,4 +112,14 @@ public class RoleController {
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+//    @DeleteMapping
+//    public ResponseEntity<Object> deleteRole(@RequestBody RoleUpdateRequest request) {
+//
+//        HibernateRole role = conversionService.convert(request, HibernateRole.class);
+//
+//        rolesRepository.delete(role);
+//
+//        return new ResponseEntity<>(role, HttpStatus.CREATED);
+//    }
 }

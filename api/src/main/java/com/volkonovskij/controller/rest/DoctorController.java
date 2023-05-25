@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/springdata/doctors")
@@ -78,6 +80,27 @@ public class DoctorController {
     }
 
     @Operation(
+            summary = "Find a doctor",
+            description = "Find the doctor by his id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Doctor",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Doctor.class))
+                    )
+            }
+    )
+    @GetMapping("/{doctorId}")
+    public ResponseEntity<Object> getDoctorById(@Parameter(name = "doctorId", example = "1", required = true) @PathVariable Long doctorId) {
+
+        Optional<Doctor> doctor = doctorsRepository.findById(doctorId);
+
+        return new ResponseEntity<>(doctor, HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "Search for all active doctors",
             description = "Search for all active doctors",
             responses = {
@@ -121,5 +144,15 @@ public class DoctorController {
         doctor = doctorsRepository.save(doctor);
 
         return new ResponseEntity<>(doctor, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Object> deleteDoctor(@RequestBody DoctorUpdateRequest request) {
+
+        Doctor doctor = conversionService.convert(request, Doctor.class);
+
+        doctorsRepository.delete(doctor);
+
+        return new ResponseEntity<>(doctor, HttpStatus.CREATED);
     }
 }

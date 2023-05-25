@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/springdata/schedules")
@@ -78,6 +80,27 @@ public class SchedulesController {
     }
 
     @Operation(
+            summary = "Find the schedule",
+            description = "Find the schedule by its id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Schedule",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Schedule.class))
+                    )
+            }
+    )
+    @GetMapping("/{scheduleId}")
+    public ResponseEntity<Object> getScheduleById(@Parameter(name = "scheduleId", example = "1", required = true) @PathVariable Long scheduleId) {
+
+        Optional<Schedule> schedule = schedulesRepository.findById(scheduleId);
+
+        return new ResponseEntity<>(schedule, HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "Search for all active schedules",
             description = "Search for all active schedules",
             responses = {
@@ -121,5 +144,15 @@ public class SchedulesController {
         schedule = schedulesRepository.save(schedule);
 
         return new ResponseEntity<>(schedule, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Object> deleteSchedule(@RequestBody SchedulesUpdateRequest request) {
+
+        Schedule schedule = conversionService.convert(request, Schedule.class);
+
+        schedulesRepository.delete(schedule);
+
+        return new ResponseEntity<>(schedule, HttpStatus.CREATED);
     }
 }

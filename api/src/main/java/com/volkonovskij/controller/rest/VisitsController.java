@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/springdata/visits")
@@ -78,6 +80,27 @@ public class VisitsController {
     }
 
     @Operation(
+            summary = "Find the visit",
+            description = "Find the visit by its id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Visit",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Visit.class))
+                    )
+            }
+    )
+    @GetMapping("/{visitId}")
+    public ResponseEntity<Object> getVisitById(@Parameter(name = "visitId", example = "1", required = true) @PathVariable Long visitId) {
+
+        Optional<Visit> visit = visitsRepository.findById(visitId);
+
+        return new ResponseEntity<>(visit, HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "Search for all active visits",
             description = "Search for all active visits",
             responses = {
@@ -121,5 +144,15 @@ public class VisitsController {
         visit = visitsRepository.save(visit);
 
         return new ResponseEntity<>(visit, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Object> deleteVisit(@RequestBody VisitUpdateRequest request) {
+
+        Visit visit = conversionService.convert(request, Visit.class);
+
+        visitsRepository.delete(visit);
+
+        return new ResponseEntity<>(visit, HttpStatus.CREATED);
     }
 }

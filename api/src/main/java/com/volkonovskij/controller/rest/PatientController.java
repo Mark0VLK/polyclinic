@@ -2,9 +2,9 @@ package com.volkonovskij.controller.rest;
 
 import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.patient.PatientCreateRequest;
+import com.volkonovskij.controller.requests.patient.PatientUpdateRequest;
 import com.volkonovskij.controller.requests.user.UserUpdateRequest;
 import com.volkonovskij.domain.hibernate.HibernatePatient;
-import com.volkonovskij.domain.hibernate.HibernateRegion;
 import com.volkonovskij.repository.springdata.PatientsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/springdata/patients")
@@ -79,6 +81,27 @@ public class PatientController {
     }
 
     @Operation(
+            summary = "Find the patient",
+            description = "Find the patient by his id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded Patient",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = HibernatePatient.class))
+                    )
+            }
+    )
+    @GetMapping("/{patientId}")
+    public ResponseEntity<Object> getPatientById(@Parameter(name = "patientId", example = "1", required = true) @PathVariable Long patientId) {
+
+        Optional<HibernatePatient> patient = patientsRepository.findById(patientId);
+
+        return new ResponseEntity<>(patient, HttpStatus.OK);
+    }
+
+    @Operation(
             summary = "Search for all active patients",
             description = "Search for all active patients",
             responses = {
@@ -122,5 +145,15 @@ public class PatientController {
         hibernatePatient = patientsRepository.save(hibernatePatient);
 
         return new ResponseEntity<>(hibernatePatient, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Object> deletePatient(@RequestBody PatientUpdateRequest request) {
+
+        HibernatePatient patient = conversionService.convert(request, HibernatePatient.class);
+
+        patientsRepository.delete(patient);
+
+        return new ResponseEntity<>(patient, HttpStatus.CREATED);
     }
 }
