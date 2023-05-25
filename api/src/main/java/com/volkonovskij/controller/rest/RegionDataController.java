@@ -77,6 +77,19 @@ public class RegionDataController {
                 regionsRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Search for all active regions",
+            description = "Search for all active regions",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded active Regions",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PageImpl.class))
+                    )
+            }
+    )
     @GetMapping("/active")
     public ResponseEntity<Object> findAllVisibleLocations() {
 

@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/springdata/doctors")
@@ -74,6 +75,28 @@ public class DoctorController {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 doctorsRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Search for all active doctors",
+            description = "Search for all active doctors",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded active Doctors",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PageImpl.class))
+                    )
+            }
+    )
+    @GetMapping("/active")
+    public ResponseEntity<Object> findAllActiveDoctors() {
+
+        Map<String, List<Doctor>> activeDoctors = Collections.singletonMap("result", doctorsRepository.findByIsDeletedIsFalse());
+
+        return new ResponseEntity<>(activeDoctors, HttpStatus.OK);
+
     }
 
     @PostMapping

@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface UserDataRepository extends JpaRepository<HibernateUser, Long> {
 
+    List<HibernateUser> findByIsDeletedIsFalse();
+
     List<HibernateUser> findByLogin(String login);
 }

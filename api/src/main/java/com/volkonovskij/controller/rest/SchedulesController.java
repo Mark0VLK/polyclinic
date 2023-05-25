@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/springdata/schedules")
@@ -74,6 +75,28 @@ public class SchedulesController {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 schedulesRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Search for all active schedules",
+            description = "Search for all active schedules",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded active Schedules",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PageImpl.class))
+                    )
+            }
+    )
+    @GetMapping("/active")
+    public ResponseEntity<Object> findAllVisibleSchedules() {
+
+        Map<String, List<Schedule>> schedules = Collections.singletonMap("result", schedulesRepository.findByIsDeletedIsFalse());
+
+        return new ResponseEntity<>(schedules, HttpStatus.OK);
+
     }
 
     @PostMapping

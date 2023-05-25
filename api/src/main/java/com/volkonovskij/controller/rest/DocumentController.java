@@ -4,6 +4,7 @@ import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.document.DocumentCreateRequest;
 import com.volkonovskij.controller.requests.document.DocumentUpdateRequest;
 import com.volkonovskij.domain.hibernate.HibernateDocument;
+import com.volkonovskij.domain.hibernate.HibernateRegion;
 import com.volkonovskij.repository.springdata.DocumentsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,8 +26,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/springdata/documents")
@@ -74,6 +78,28 @@ public class DocumentController {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 documentsRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Search through all active documents",
+            description = "Search for all documents that have not expired",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded active Documents",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PageImpl.class))
+                    )
+            }
+    )
+    @GetMapping("/active")
+    public ResponseEntity<Object> findAllVisibleDocuments() {
+
+        Map<String, List<HibernateDocument>> documents = Collections.singletonMap("result", documentsRepository.findByHQLQuery(Timestamp.valueOf(LocalDateTime.now())));
+
+        return new ResponseEntity<>(documents, HttpStatus.OK);
+
     }
 
     @PostMapping

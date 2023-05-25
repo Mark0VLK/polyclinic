@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/springdata/users")
@@ -76,6 +77,28 @@ public class UserDataController {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 userRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Search for all active users",
+            description = "Search for all active users",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded active Users",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PageImpl.class))
+                    )
+            }
+    )
+    @GetMapping("/active")
+    public ResponseEntity<Object> findAllVisibleUserss() {
+
+        Map<String, List<HibernateUser>> users = Collections.singletonMap("result", userRepository.findByIsDeletedIsFalse());
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+
     }
 
     @PostMapping

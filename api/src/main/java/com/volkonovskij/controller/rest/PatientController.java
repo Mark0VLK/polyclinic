@@ -4,6 +4,7 @@ import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.patient.PatientCreateRequest;
 import com.volkonovskij.controller.requests.user.UserUpdateRequest;
 import com.volkonovskij.domain.hibernate.HibernatePatient;
+import com.volkonovskij.domain.hibernate.HibernateRegion;
 import com.volkonovskij.repository.springdata.PatientsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/springdata/patients")
@@ -74,6 +76,28 @@ public class PatientController {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 patientsRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Search for all active patients",
+            description = "Search for all active patients",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded active Patients",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PageImpl.class))
+                    )
+            }
+    )
+    @GetMapping("/active")
+    public ResponseEntity<Object> findAllVisiblePatients() {
+
+        Map<String, List<HibernatePatient>> patients = Collections.singletonMap("result", patientsRepository.findByIsDeletedIsFalse());
+
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+
     }
 
     @PostMapping

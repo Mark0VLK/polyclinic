@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/springdata/specializations")
@@ -74,6 +75,28 @@ public class SpecializationsController {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
                 specializationsRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "Search for all active specializations",
+            description = "Search for all active specializations",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded active Specializations",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = PageImpl.class))
+                    )
+            }
+    )
+    @GetMapping("/active")
+    public ResponseEntity<Object> findAllVisibleSpecializations() {
+
+        Map<String, List<Specialization>> specializations = Collections.singletonMap("result", specializationsRepository.findByIsDeletedIsFalse());
+
+        return new ResponseEntity<>(specializations, HttpStatus.OK);
+
     }
 
     @PostMapping

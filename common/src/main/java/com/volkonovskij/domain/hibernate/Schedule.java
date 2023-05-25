@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.cache.annotation.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +35,7 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
+@Cacheable("schedules")
 @Table(name = "schedules")
 public class Schedule {
 

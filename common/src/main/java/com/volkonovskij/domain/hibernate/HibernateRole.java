@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.cache.annotation.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +32,7 @@ import java.sql.Timestamp;
         "user"
 })
 @Entity
+@Cacheable("roles")
 @Table(name = "roles")
 public class HibernateRole {
 

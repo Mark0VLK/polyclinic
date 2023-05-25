@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.cache.annotation.Cacheable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +33,7 @@ import java.sql.Timestamp;
         "user"
 })
 @Entity
+@Cacheable("personal_doc")
 @Table(name = "personal_doc")
 public class HibernateDocument {
 
