@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Setter
@@ -37,6 +38,7 @@ public class UserCreateRequest {
         description = "user password"
     )
     @NotNull
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$")
     @Size(min = 8, max = 20)
     private String password;
 

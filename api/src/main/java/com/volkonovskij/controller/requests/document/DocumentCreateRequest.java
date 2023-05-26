@@ -61,6 +61,5 @@ public class DocumentCreateRequest {
         description = "passport expiration date"
     )
     @NotNull
-    @Pattern(regexp = "\\d+0{3}")
     private Timestamp expirationDate;
 }

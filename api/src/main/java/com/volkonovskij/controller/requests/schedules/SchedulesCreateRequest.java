@@ -27,7 +27,6 @@ public class SchedulesCreateRequest {
         description = "date"
     )
     @NotNull
-    @Pattern(regexp = "\\d+0{3}")
     private Timestamp date;
 
     @Schema
@@ -38,7 +37,6 @@ public class SchedulesCreateRequest {
         description = "reception start time"
     )
     @NotNull
-    @Pattern(regexp = "\\d+0{3}")
     private Timestamp timeStart;
 
     @Schema
@@ -49,6 +47,5 @@ public class SchedulesCreateRequest {
         description = "reception end time"
     )
     @NotNull
-    @Pattern(regexp = "\\d+0{3}")
     private Timestamp timeFinish;
 }

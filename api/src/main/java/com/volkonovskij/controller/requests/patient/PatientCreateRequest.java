@@ -51,7 +51,7 @@ public class PatientCreateRequest {
         description = "patient's gender"
     )
     @NotNull
-    private Gender gender;
+    private Gender gender = Gender.NOT_SELECTED;
 
     @Schema
     (
@@ -61,7 +61,6 @@ public class PatientCreateRequest {
         description = "patient's birth date"
     )
     @NotNull
-    @Pattern(regexp = "\\d+0{3}")
     private Timestamp birthDate;
 
     @Schema
