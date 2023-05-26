@@ -1,6 +1,7 @@
 package com.volkonovskij.domain.hibernate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.volkonovskij.domain.SystemRoles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -11,6 +12,8 @@ import lombok.ToString;
 import org.springframework.cache.annotation.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +45,8 @@ public class HibernateRole {
     private Long id;
 
     @Column(name = "role_name")
-    private String roleName;
+    @Enumerated(EnumType.STRING)
+    private SystemRoles roleName;
 
     @Column(name = "created")
     private Timestamp created;

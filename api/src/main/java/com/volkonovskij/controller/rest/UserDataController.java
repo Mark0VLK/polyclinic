@@ -94,10 +94,10 @@ public class UserDataController {
                     )
             }
     )
-    @GetMapping("/{userId}")
-    public ResponseEntity<Object> getUserById(@Parameter(name = "userId", example = "1", required = true) @PathVariable Long userId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getUserById(@Parameter(name = "id", example = "1", required = true) @PathVariable Long id) {
 
-        Optional<HibernateUser> user = userRepository.findById(userId);
+        Optional<HibernateUser> user = userRepository.findById(id);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
@@ -157,13 +157,13 @@ public class UserDataController {
         return new ResponseEntity<>(Collections.singletonMap("result", result), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> deleteUser(@RequestBody UserUpdateRequest request) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
 
-        HibernateUser user = conversionService.convert(request, HibernateUser.class);
+        Optional<HibernateUser> user = userRepository.findById(id);
 
-        userRepository.delete(user);
+        userRepository.deleteById(id);
 
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

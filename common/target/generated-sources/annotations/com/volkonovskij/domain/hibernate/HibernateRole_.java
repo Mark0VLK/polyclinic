@@ -1,5 +1,6 @@
 package com.volkonovskij.domain.hibernate;
 
+import com.volkonovskij.domain.SystemRoles;
 import java.sql.Timestamp;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
@@ -10,7 +11,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class HibernateRole_ {
 
 	public static volatile SingularAttribute<HibernateRole, Timestamp> created;
-	public static volatile SingularAttribute<HibernateRole, String> roleName;
+	public static volatile SingularAttribute<HibernateRole, SystemRoles> roleName;
 	public static volatile SingularAttribute<HibernateRole, Long> id;
 	public static volatile SingularAttribute<HibernateRole, HibernateUser> user;
 	public static volatile SingularAttribute<HibernateRole, Timestamp> changed;
