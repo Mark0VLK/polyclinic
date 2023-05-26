@@ -28,5 +28,6 @@ spring:
 ---
 
 jwtconfig:
-  secret: qgsdbcsh76
+  secret: V3WxbADqTv
   expiration: 6000000
+  passwordSalt: d3b66fc3-5ae6-4433-9622-32e318a0953d

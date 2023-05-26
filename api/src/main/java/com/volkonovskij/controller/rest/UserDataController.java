@@ -87,7 +87,7 @@ public class UserDataController {
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded User",
+                            description = "Successfully loaded Users",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = HibernateUser.class))

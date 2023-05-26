@@ -1,5 +1,6 @@
 package com.volkonovskij.security.controller;
 
+import com.volkonovskij.security.config.JWTConfiguration;
 import com.volkonovskij.security.dto.AuthRequest;
 import com.volkonovskij.security.dto.AuthResponse;
 import com.volkonovskij.security.jwt.TokenProvider;
@@ -26,6 +27,8 @@ public class AuthenticationController {
 
     private final UserDetailsService userProvider;
 
+    private final JWTConfiguration configuration;
+
     @PostMapping
     public ResponseEntity<AuthResponse> loginUser(@RequestBody AuthRequest request) {
 
@@ -33,7 +36,7 @@ public class AuthenticationController {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getLogin(),
-                        request.getPassword()
+                        request.getPassword() + configuration.getServerPasswordSalt()
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authenticate);
