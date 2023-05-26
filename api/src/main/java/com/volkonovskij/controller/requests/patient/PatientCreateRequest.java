@@ -1,12 +1,13 @@
 package com.volkonovskij.controller.requests.patient;
 
-import com.volkonovskij.domain.Gender;
+import com.volkonovskij.domain.system.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;

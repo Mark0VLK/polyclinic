@@ -3,8 +3,8 @@ package com.volkonovskij.controller.rest;
 import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.doctor.DoctorCreateRequest;
 import com.volkonovskij.controller.requests.doctor.DoctorUpdateRequest;
-import com.volkonovskij.domain.hibernate.Doctor;
-import com.volkonovskij.repository.springdata.DoctorsRepository;
+import com.volkonovskij.domain.Doctor;
+import com.volkonovskij.repository.DoctorsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/rest/springdata/doctors")
+@RequestMapping("/rest/doctors")
 @RequiredArgsConstructor
 public class DoctorController {
 
@@ -76,7 +77,7 @@ public class DoctorController {
     public ResponseEntity<Object> page(@Parameter(name = "page", example = "1", required = true) @PathVariable int page) {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
-                doctorsRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+                doctorsRepository.findAll(PageRequest.of(page, 1))), HttpStatus.OK);
     }
 
     @Operation(
@@ -146,12 +147,12 @@ public class DoctorController {
         return new ResponseEntity<>(doctor, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> deleteDoctor(@RequestBody DoctorUpdateRequest request) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteDoctor(@PathVariable Long id) {
 
-        Doctor doctor = conversionService.convert(request, Doctor.class);
+        Optional<Doctor> doctor = doctorsRepository.findById(id);
 
-        doctorsRepository.delete(doctor);
+        doctorsRepository.deleteById(id);
 
         return new ResponseEntity<>(doctor, HttpStatus.CREATED);
     }

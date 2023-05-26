@@ -1,9 +1,10 @@
 package com.volkonovskij.controller.converter.visit;
 
 import com.volkonovskij.controller.requests.visit.VisitCreateRequest;
-import com.volkonovskij.domain.hibernate.Visit;
+import com.volkonovskij.domain.Visit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 

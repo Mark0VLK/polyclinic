@@ -13,7 +13,7 @@ public enum ApplicationErrorCodes {
         return codeId;
     }
 
-    private int codeId;
+    private final int codeId;
 
     ApplicationErrorCodes(int codeId) {
         this.codeId = codeId;

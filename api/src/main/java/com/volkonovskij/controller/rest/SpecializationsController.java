@@ -3,8 +3,8 @@ package com.volkonovskij.controller.rest;
 import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.specialization.SpecializationCreateRequest;
 import com.volkonovskij.controller.requests.specialization.SpecializationUpdateRequest;
-import com.volkonovskij.domain.hibernate.Specialization;
-import com.volkonovskij.repository.springdata.SpecializationsRepository;
+import com.volkonovskij.domain.Specialization;
+import com.volkonovskij.repository.SpecializationsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/rest/springdata/specializations")
+@RequestMapping("/rest/specializations")
 @RequiredArgsConstructor
 public class SpecializationsController {
 
@@ -76,7 +77,7 @@ public class SpecializationsController {
     public ResponseEntity<Object> page(@Parameter(name = "page", example = "1", required = true) @PathVariable int page) {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
-                specializationsRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+                specializationsRepository.findAll(PageRequest.of(page, 1))), HttpStatus.OK);
     }
 
     @Operation(
@@ -146,12 +147,12 @@ public class SpecializationsController {
         return new ResponseEntity<>(specialization, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> deleteUser(@RequestBody SpecializationUpdateRequest request) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
 
-        Specialization specialization = conversionService.convert(request, Specialization.class);
+        Optional<Specialization> specialization = specializationsRepository.findById(id);
 
-        specializationsRepository.delete(specialization);
+        specializationsRepository.deleteById(id);
 
         return new ResponseEntity<>(specialization, HttpStatus.CREATED);
     }

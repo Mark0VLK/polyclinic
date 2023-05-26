@@ -1,20 +1,21 @@
 package com.volkonovskij.controller.converter.document;
 
 import com.volkonovskij.controller.requests.document.DocumentCreateRequest;
-import com.volkonovskij.domain.hibernate.HibernateDocument;
+import com.volkonovskij.domain.Document;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class DocumentCreateConverter extends DocumentBaseConverter<DocumentCreateRequest, HibernateDocument>  {
+public class DocumentCreateConverter extends DocumentBaseConverter<DocumentCreateRequest, Document>  {
 
     @Override
-    public HibernateDocument convert(DocumentCreateRequest request) {
+    public Document convert(DocumentCreateRequest request) {
 
-        HibernateDocument document = new HibernateDocument();
+        Document document = new Document();
 
         document.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         document.setChanged(Timestamp.valueOf(LocalDateTime.now()));

@@ -1,11 +1,12 @@
 package com.volkonovskij.controller.converter.doctor;
 
 import com.volkonovskij.controller.requests.doctor.DoctorUpdateRequest;
-import com.volkonovskij.domain.hibernate.Doctor;
+import com.volkonovskij.domain.Doctor;
 import com.volkonovskij.exception.EntityNotFoundException;
-import com.volkonovskij.repository.springdata.DoctorsRepository;
+import com.volkonovskij.repository.DoctorsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;

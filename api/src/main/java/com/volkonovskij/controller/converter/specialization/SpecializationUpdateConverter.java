@@ -1,11 +1,12 @@
 package com.volkonovskij.controller.converter.specialization;
 
 import com.volkonovskij.controller.requests.specialization.SpecializationUpdateRequest;
-import com.volkonovskij.domain.hibernate.Specialization;
+import com.volkonovskij.domain.Specialization;
 import com.volkonovskij.exception.EntityNotFoundException;
-import com.volkonovskij.repository.springdata.SpecializationsRepository;
+import com.volkonovskij.repository.SpecializationsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;

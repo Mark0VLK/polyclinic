@@ -1,11 +1,12 @@
 package com.volkonovskij.controller.converter.visit;
 
 import com.volkonovskij.controller.requests.visit.VisitUpdateRequest;
-import com.volkonovskij.domain.hibernate.Visit;
+import com.volkonovskij.domain.Visit;
 import com.volkonovskij.exception.EntityNotFoundException;
-import com.volkonovskij.repository.springdata.VisitsRepository;
+import com.volkonovskij.repository.VisitsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;

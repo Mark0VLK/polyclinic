@@ -1,11 +1,12 @@
 package com.volkonovskij.controller.converter.schedules;
 
 import com.volkonovskij.controller.requests.schedules.SchedulesUpdateRequest;
-import com.volkonovskij.domain.hibernate.Schedule;
+import com.volkonovskij.domain.Schedule;
 import com.volkonovskij.exception.EntityNotFoundException;
-import com.volkonovskij.repository.springdata.SchedulesRepository;
+import com.volkonovskij.repository.SchedulesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;

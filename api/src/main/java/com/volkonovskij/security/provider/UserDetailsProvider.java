@@ -1,10 +1,10 @@
 package com.volkonovskij.security.provider;
 
-import com.volkonovskij.domain.SystemRoles;
-import com.volkonovskij.domain.hibernate.AuthenticationInfo;
-import com.volkonovskij.domain.hibernate.HibernateRole;
-import com.volkonovskij.domain.hibernate.HibernateUser;
-import com.volkonovskij.repository.springdata.UserDataRepository;
+import com.volkonovskij.domain.Role;
+import com.volkonovskij.domain.system.SystemRoles;
+import com.volkonovskij.domain.AuthenticationInfo;
+import com.volkonovskij.domain.User;
+import com.volkonovskij.repository.UserDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,12 +26,12 @@ public class UserDetailsProvider implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            Optional<HibernateUser> searchResult = userDataRepository.findByAuthenticationInfoEmail(email);
+            Optional<User> searchResult = userDataRepository.findByAuthenticationInfoEmail(email);
 
             if (searchResult.isPresent()) {
-                HibernateUser user = searchResult.get();
+                User user = searchResult.get();
                 AuthenticationInfo authenticationInfo = user.getAuthenticationInfo();
-                Set<HibernateRole> roles = user.getRoles();
+                Set<Role> roles = user.getRoles();
 
                 return new org.springframework.security.core.userdetails.User(
                         authenticationInfo.getEmail(),
@@ -40,7 +40,7 @@ public class UserDetailsProvider implements UserDetailsService {
                         AuthorityUtils.commaSeparatedStringToAuthorityList(
                                 roles
                                         .stream()
-                                        .map(HibernateRole::getRoleName)
+                                        .map(Role::getRoleName)
                                         .map(SystemRoles::name)
                                         .collect(Collectors.joining(","))
                         )

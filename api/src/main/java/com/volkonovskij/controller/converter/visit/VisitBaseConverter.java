@@ -1,7 +1,7 @@
 package com.volkonovskij.controller.converter.visit;
 
 import com.volkonovskij.controller.requests.visit.VisitCreateRequest;
-import com.volkonovskij.domain.hibernate.Visit;
+import com.volkonovskij.domain.Visit;
 import org.springframework.core.convert.converter.Converter;
 
 public abstract class VisitBaseConverter<S, T> implements Converter<S, T> {

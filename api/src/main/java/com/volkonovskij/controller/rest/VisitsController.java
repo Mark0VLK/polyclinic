@@ -3,8 +3,8 @@ package com.volkonovskij.controller.rest;
 import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.visit.VisitCreateRequest;
 import com.volkonovskij.controller.requests.visit.VisitUpdateRequest;
-import com.volkonovskij.domain.hibernate.Visit;
-import com.volkonovskij.repository.springdata.VisitsRepository;
+import com.volkonovskij.domain.Visit;
+import com.volkonovskij.repository.VisitsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/rest/springdata/visits")
+@RequestMapping("/rest/visits")
 @RequiredArgsConstructor
 public class VisitsController {
 
@@ -76,7 +77,7 @@ public class VisitsController {
     public ResponseEntity<Object> page(@Parameter(name = "page", example = "1", required = true) @PathVariable int page) {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
-                visitsRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+                visitsRepository.findAll(PageRequest.of(page, 1))), HttpStatus.OK);
     }
 
     @Operation(
@@ -146,12 +147,12 @@ public class VisitsController {
         return new ResponseEntity<>(visit, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> deleteVisit(@RequestBody VisitUpdateRequest request) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteVisit(@PathVariable Long id) {
 
-        Visit visit = conversionService.convert(request, Visit.class);
+        Optional<Visit> visit = visitsRepository.findById(id);
 
-        visitsRepository.delete(visit);
+        visitsRepository.findById(id);
 
         return new ResponseEntity<>(visit, HttpStatus.CREATED);
     }

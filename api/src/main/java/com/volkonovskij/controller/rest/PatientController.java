@@ -2,10 +2,9 @@ package com.volkonovskij.controller.rest;
 
 import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.patient.PatientCreateRequest;
-import com.volkonovskij.controller.requests.patient.PatientUpdateRequest;
 import com.volkonovskij.controller.requests.user.UserUpdateRequest;
-import com.volkonovskij.domain.hibernate.HibernatePatient;
-import com.volkonovskij.repository.springdata.PatientsRepository;
+import com.volkonovskij.domain.Patient;
+import com.volkonovskij.repository.PatientsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/rest/springdata/patients")
+@RequestMapping("/rest/patients")
 @RequiredArgsConstructor
 public class PatientController {
 
@@ -50,13 +50,13 @@ public class PatientController {
                             description = "Successfully loaded Patients",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = HibernatePatient.class))
+                                    schema = @Schema(implementation = Patient.class))
                     )
             }
     )
     @GetMapping
     public ResponseEntity<Object> getAllPatients() {
-        List<HibernatePatient> patients = patientsRepository.findAll();
+        List<Patient> patients = patientsRepository.findAll();
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
 
@@ -77,7 +77,7 @@ public class PatientController {
     public ResponseEntity<Object> page(@Parameter(name = "page", example = "1", required = true) @PathVariable int page) {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
-                patientsRepository.findAll(PageRequest.of(page,1))), HttpStatus.OK);
+                patientsRepository.findAll(PageRequest.of(page, 1))), HttpStatus.OK);
     }
 
     @Operation(
@@ -89,14 +89,14 @@ public class PatientController {
                             description = "Successfully loaded Patient",
                             content = @Content(
                                     mediaType = "application/json",
-                                    schema = @Schema(implementation = HibernatePatient.class))
+                                    schema = @Schema(implementation = Patient.class))
                     )
             }
     )
     @GetMapping("/{patientId}")
     public ResponseEntity<Object> getPatientById(@Parameter(name = "patientId", example = "1", required = true) @PathVariable Long patientId) {
 
-        Optional<HibernatePatient> patient = patientsRepository.findById(patientId);
+        Optional<Patient> patient = patientsRepository.findById(patientId);
 
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
@@ -117,7 +117,7 @@ public class PatientController {
     @GetMapping("/active")
     public ResponseEntity<Object> findAllVisiblePatients() {
 
-        Map<String, List<HibernatePatient>> patients = Collections.singletonMap("result", patientsRepository.findByIsDeletedIsFalse());
+        Map<String, List<Patient>> patients = Collections.singletonMap("result", patientsRepository.findByIsDeletedIsFalse());
 
         return new ResponseEntity<>(patients, HttpStatus.OK);
 
@@ -130,30 +130,30 @@ public class PatientController {
             throw new IllegalRequestException(result);
         }
 
-        HibernatePatient hibernatePatient = conversionService.convert(request, HibernatePatient.class);
+        Patient patient = conversionService.convert(request, Patient.class);
 
-        hibernatePatient = patientsRepository.save(hibernatePatient);
+        patient = patientsRepository.save(patient);
 
-        return new ResponseEntity<>(hibernatePatient, HttpStatus.CREATED);
+        return new ResponseEntity<>(patient, HttpStatus.CREATED);
     }
 
     @PutMapping
     public ResponseEntity<Object> updatePatient(@RequestBody UserUpdateRequest request) {
 
-        HibernatePatient hibernatePatient = conversionService.convert(request, HibernatePatient.class);
+        Patient patient = conversionService.convert(request, Patient.class);
 
-        hibernatePatient = patientsRepository.save(hibernatePatient);
+        patient = patientsRepository.save(patient);
 
-        return new ResponseEntity<>(hibernatePatient, HttpStatus.OK);
+        return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Object> deletePatient(@RequestBody PatientUpdateRequest request) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deletePatient(@PathVariable Long id) {
 
-        HibernatePatient patient = conversionService.convert(request, HibernatePatient.class);
+       Optional<Patient> patient = patientsRepository.findById(id);
 
-        patientsRepository.delete(patient);
+       patientsRepository.findById(id);
 
-        return new ResponseEntity<>(patient, HttpStatus.CREATED);
+       return new ResponseEntity<>(patient, HttpStatus.CREATED);
     }
 }

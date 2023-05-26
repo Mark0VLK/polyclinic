@@ -1,7 +1,7 @@
 package com.volkonovskij.controller.converter.schedules;
 
 import com.volkonovskij.controller.requests.schedules.SchedulesCreateRequest;
-import com.volkonovskij.domain.hibernate.Schedule;
+import com.volkonovskij.domain.Schedule;
 import org.springframework.core.convert.converter.Converter;
 
 public abstract class SchedulesBaseConverter<S, T> implements Converter<S, T> {

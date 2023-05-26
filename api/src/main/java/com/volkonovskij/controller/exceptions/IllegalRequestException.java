@@ -13,24 +13,4 @@ public class IllegalRequestException extends RuntimeException{
     public IllegalRequestException(BindingResult bindingResult) {
         this.bindingResult = bindingResult;
     }
-
-    public IllegalRequestException(String message, BindingResult bindingResult) {
-        super(message);
-        this.bindingResult = bindingResult;
-    }
-
-    public IllegalRequestException(String message, Throwable cause, BindingResult bindingResult) {
-        super(message, cause);
-        this.bindingResult = bindingResult;
-    }
-
-    public IllegalRequestException(Throwable cause, BindingResult bindingResult) {
-        super(cause);
-        this.bindingResult = bindingResult;
-    }
-
-    public IllegalRequestException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, BindingResult bindingResult) {
-        super(message, cause, enableSuppression, writableStackTrace);
-        this.bindingResult = bindingResult;
-    }
 }

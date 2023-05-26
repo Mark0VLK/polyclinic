@@ -41,7 +41,7 @@ public class EntityNotFoundException extends RuntimeException {
 
     @Override
     public String toString() {
-        return  "EntityNotFoundException{" +
+        return "EntityNotFoundException{" +
                 "customMessage='" + customMessage + '\'' +
                 "} " + super.toString();
     }
