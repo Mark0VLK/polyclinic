@@ -4,7 +4,7 @@ import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.user.UserCreateRequest;
 import com.volkonovskij.controller.requests.user.UserUpdateRequest;
 import com.volkonovskij.domain.User;
-import com.volkonovskij.repository.UserDataRepository;
+import com.volkonovskij.repository.UsersRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -39,7 +39,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserDataRepository userRepository;
+    private final UsersRepository userRepository;
 
     private final ConversionService conversionService;
 

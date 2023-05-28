@@ -25,8 +25,8 @@ import org.springframework.context.annotation.Configuration;
                         email = "markvolkonovskij@gmail.com"
                 ),
                 license = @License(
-                name = "MIT Licence",
-                url = "https://opensource.org/licenses/mit-license.php"
+                        name = "MIT Licence",
+                        url = "https://opensource.org/licenses/mit-license.php"
                 )
         ),
         security = {

@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebMVC implements WebMvcConfigurer {
 
-    private final List <Converter<?, ?>> converters;
+    private final List<Converter<?, ?>> converters;
 
     @Override
     public void addFormatters(FormatterRegistry registry) {

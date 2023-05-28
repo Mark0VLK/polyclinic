@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RegionsDataRepository extends JpaRepository<Region, Long> {
+public interface RegionsRepository extends JpaRepository<Region, Long> {
 
     @Cacheable("regions")
     List<Region> findByIsDeletedIsFalse();

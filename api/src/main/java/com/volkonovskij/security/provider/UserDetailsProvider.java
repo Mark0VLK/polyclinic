@@ -1,10 +1,10 @@
 package com.volkonovskij.security.provider;
 
-import com.volkonovskij.domain.Role;
-import com.volkonovskij.domain.system.SystemRoles;
 import com.volkonovskij.domain.AuthenticationInfo;
+import com.volkonovskij.domain.Role;
 import com.volkonovskij.domain.User;
-import com.volkonovskij.repository.UserDataRepository;
+import com.volkonovskij.domain.system.SystemRoles;
+import com.volkonovskij.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 public class UserDetailsProvider implements UserDetailsService {
 
 
-    private final UserDataRepository userDataRepository;
+    private final UsersRepository usersRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            Optional<User> searchResult = userDataRepository.findByAuthenticationInfoEmail(email);
+            Optional<User> searchResult = usersRepository.findByAuthenticationInfoEmail(email);
 
             if (searchResult.isPresent()) {
                 User user = searchResult.get();

@@ -3,7 +3,7 @@ package com.volkonovskij.controller.converter.region;
 import com.volkonovskij.controller.requests.region.RegionUpdateRequest;
 import com.volkonovskij.domain.Region;
 import com.volkonovskij.exception.EntityNotFoundException;
-import com.volkonovskij.repository.RegionsDataRepository;
+import com.volkonovskij.repository.RegionsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RegionUpdateConverter extends RegionBaseConverter<RegionUpdateRequest, Region> {
 
-    private final RegionsDataRepository repository;
+    private final RegionsRepository repository;
 
     @Override
     public Region convert(RegionUpdateRequest request) {

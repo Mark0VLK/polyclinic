@@ -1,6 +1,6 @@
-package com.volkonovskij.controller.converter.schedules;
+package com.volkonovskij.controller.converter.schedule;
 
-import com.volkonovskij.controller.requests.schedules.SchedulesUpdateRequest;
+import com.volkonovskij.controller.requests.schedule.ScheduleUpdateRequest;
 import com.volkonovskij.domain.Schedule;
 import com.volkonovskij.exception.EntityNotFoundException;
 import com.volkonovskij.repository.SchedulesRepository;
@@ -13,12 +13,12 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class SchedulesUpdateConverter extends SchedulesBaseConverter<SchedulesUpdateRequest, Schedule> {
+public class ScheduleUpdateConverter extends ScheduleBaseConverter<ScheduleUpdateRequest, Schedule> {
 
     private final SchedulesRepository repository;
 
     @Override
-    public Schedule convert(SchedulesUpdateRequest source) {
+    public Schedule convert(ScheduleUpdateRequest source) {
 
         Optional<Schedule> schedule = repository.findById(source.getId());
         schedule.orElseThrow(EntityNotFoundException::new).setChanged(Timestamp.valueOf(LocalDateTime.now()));

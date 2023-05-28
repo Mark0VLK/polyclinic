@@ -1,7 +1,11 @@
 package com.volkonovskij.controller.rest;
 
+import com.volkonovskij.controller.exceptions.IllegalRequestException;
+import com.volkonovskij.controller.requests.role.RoleCreateRequest;
+import com.volkonovskij.controller.requests.role.RoleUpdateRequest;
 import com.volkonovskij.domain.Role;
 import com.volkonovskij.repository.RolesRepository;
+import com.volkonovskij.service.RolesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,11 +17,17 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +38,8 @@ import java.util.Optional;
 public class RoleController {
 
     private final RolesRepository rolesRepository;
+
+    private final RolesService rolesService;
 
     private final ConversionService conversionService;
 
@@ -83,34 +95,53 @@ public class RoleController {
                     )
             }
     )
-    @GetMapping("/{roleId}")
-    public ResponseEntity<Object> getRoleById(@Parameter(name = "roleId", example = "1", required = true) @PathVariable Long roleId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getRoleById(@Parameter(name = "id", example = "1", required = true) @PathVariable Long id) {
 
-        Optional<Role> role = rolesRepository.findById(roleId);
+        Optional<Role> role = rolesRepository.findById(id);
 
         return new ResponseEntity<>(role, HttpStatus.OK);
     }
 
-//    @GetMapping("/{userId}")
-//    public ResponseEntity<Map<String, Object>> getUsersAuthorities(@PathVariable Long userId) {
-//
-//        User user = userService.findById(userId);
-//        List<Role> roles = roleService.getUserAuthorities(userId);
-//
-//        Map<String, Object> result = new LinkedHashMap<>();
-//        result.put("user", user);
-//        result.put("roles", roles);
-//
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
+    @GetMapping("user/{id}")
+    public ResponseEntity<Object> AllUserRolesById(@Parameter(name = "id", example = "1", required = true) @PathVariable Long id) {
 
-//    @DeleteMapping
-//    public ResponseEntity<Object> deleteRole(@RequestBody RoleUpdateRequest request) {
-//
-//        Role role = conversionService.convert(request, Role.class);
-//
-//        rolesRepository.delete(role);
-//
-//        return new ResponseEntity<>(role, HttpStatus.CREATED);
-//    }
+        List<String> roles = rolesService.userRoles(id);
+
+        return new ResponseEntity<>(Collections.singletonMap("roles", roles), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> saveRole(@Valid @RequestBody RoleCreateRequest request, BindingResult result) {
+
+        if (result.hasErrors()) {
+            throw new IllegalRequestException(result);
+        }
+
+        Role role = conversionService.convert(request, Role.class);
+
+        role = rolesRepository.save(role);
+
+        return new ResponseEntity<>(role, HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> updateRole(@RequestBody RoleUpdateRequest request) {
+
+        Role role = conversionService.convert(request, Role.class);
+
+        role = rolesRepository.save(role);
+
+        return new ResponseEntity<>(role, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteRole(@PathVariable Long id) {
+
+        Optional<Role> role = rolesRepository.findById(id);
+
+        rolesRepository.deleteById(id);
+
+        return new ResponseEntity<>(role, HttpStatus.OK);
+    }
 }

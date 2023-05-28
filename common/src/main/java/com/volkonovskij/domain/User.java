@@ -73,7 +73,7 @@ public class User {
     @JsonManagedReference
     private Set<Role> roles = Collections.emptySet();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Document document;
 

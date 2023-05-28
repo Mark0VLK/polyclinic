@@ -11,7 +11,7 @@ import java.util.List;
 public interface DocumentsRepository extends JpaRepository<Document, Long> {
 
     @Cacheable("personal_doc")
-    @Query(value = "select u from Document u where u.expirationDate < :currentTimestamp ORDER BY u.id")
-    List<Document> findByHQLQuery(Timestamp currentTimestamp);
+    @Query(value = "select u from Document u where u.expirationDate > :currentTimestamp ORDER BY u.id")
+    List<Document> findAllValidDocuments(Timestamp currentTimestamp);
 
 }

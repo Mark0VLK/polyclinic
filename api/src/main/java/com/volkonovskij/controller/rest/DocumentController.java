@@ -95,10 +95,10 @@ public class DocumentController {
                     )
             }
     )
-    @GetMapping("/{documentId}")
-    public ResponseEntity<Object> getDocumentById(@Parameter(name = "documentId", example = "1", required = true) @PathVariable Long documentId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getDocumentById(@Parameter(name = "id", example = "1", required = true) @PathVariable Long id) {
 
-        Optional<Document> document = documentsRepository.findById(documentId);
+        Optional<Document> document = documentsRepository.findById(id);
 
         return new ResponseEntity<>(document, HttpStatus.OK);
     }
@@ -119,7 +119,7 @@ public class DocumentController {
     @GetMapping("/active")
     public ResponseEntity<Object> findAllVisibleDocuments() {
 
-        Map<String, List<Document>> documents = Collections.singletonMap("result", documentsRepository.findByHQLQuery(Timestamp.valueOf(LocalDateTime.now())));
+        Map<String, List<Document>> documents = Collections.singletonMap("result", documentsRepository.findAllValidDocuments(Timestamp.valueOf(LocalDateTime.now())));
 
         return new ResponseEntity<>(documents, HttpStatus.OK);
 
@@ -156,6 +156,6 @@ public class DocumentController {
 
         documentsRepository.deleteById(id);
 
-        return new ResponseEntity<>(document, HttpStatus.CREATED);
+        return new ResponseEntity<>(document, HttpStatus.OK);
     }
 }

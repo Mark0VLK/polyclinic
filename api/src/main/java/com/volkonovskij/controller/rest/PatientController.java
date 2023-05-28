@@ -2,9 +2,12 @@ package com.volkonovskij.controller.rest;
 
 import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.patient.PatientCreateRequest;
-import com.volkonovskij.controller.requests.user.UserUpdateRequest;
+import com.volkonovskij.controller.requests.patient.PatientUpdateRequest;
+import com.volkonovskij.controller.requests.search.SearchByGenderAndDate;
+import com.volkonovskij.controller.requests.search.SearchCriteria;
 import com.volkonovskij.domain.Patient;
 import com.volkonovskij.repository.PatientsRepository;
+import com.volkonovskij.service.PatientsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,6 +41,8 @@ import java.util.Optional;
 public class PatientController {
 
     private final PatientsRepository patientsRepository;
+
+    private final PatientsService patientsService;
 
     private final ConversionService conversionService;
 
@@ -93,7 +98,7 @@ public class PatientController {
                     )
             }
     )
-    @GetMapping("/{patientId}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> getPatientById(@Parameter(name = "patientId", example = "1", required = true) @PathVariable Long patientId) {
 
         Optional<Patient> patient = patientsRepository.findById(patientId);
@@ -123,6 +128,54 @@ public class PatientController {
 
     }
 
+    @GetMapping("find/phoneAndAddress")
+    public ResponseEntity<Object> phoneNumberByNameAndSurname(@RequestBody SearchCriteria criteria, BindingResult result) {
+
+        if (result.hasErrors()) {
+            throw new IllegalRequestException(result);
+        }
+
+        List<Object[]> phoneAndAddress = patientsService.phoneAndAddressByInitials(criteria.getName(), criteria.getSurname());
+
+        return new ResponseEntity<>(Collections.singletonMap("phoneAndAddress", phoneAndAddress), HttpStatus.OK);
+    }
+
+    @GetMapping("/medicalHistory")
+    public ResponseEntity<Object> medicalHistory(@RequestBody SearchCriteria criteria, BindingResult result) {
+
+        if (result.hasErrors()) {
+            throw new IllegalRequestException(result);
+        }
+
+        List<Object[]> history = patientsService.medicalHistory(criteria.getName(), criteria.getSurname());
+
+        return new ResponseEntity<>(Collections.singletonMap("history", history), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Object> searchByGenderAndBirthDate(@RequestBody SearchByGenderAndDate criteria, BindingResult result) {
+
+        if (result.hasErrors()) {
+            throw new IllegalRequestException(result);
+        }
+
+        List<Patient> patients = patientsService.findByGenderAndBirthDate(criteria.getGender(), criteria.getBirthDate());
+
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
+    @GetMapping("/totalAmount")
+    public ResponseEntity<Object> totalAmount(@RequestBody SearchCriteria criteria, BindingResult result) {
+
+        if (result.hasErrors()) {
+            throw new IllegalRequestException(result);
+        }
+
+        Float total = patientsService.unpaidAmount(criteria.getName(), criteria.getSurname());
+
+        return new ResponseEntity<>(Collections.singletonMap("totalAmount", total), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Object> savePatient(@Valid @RequestBody PatientCreateRequest request, BindingResult result) {
 
@@ -138,7 +191,7 @@ public class PatientController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> updatePatient(@RequestBody UserUpdateRequest request) {
+    public ResponseEntity<Object> updatePatient(@RequestBody PatientUpdateRequest request) {
 
         Patient patient = conversionService.convert(request, Patient.class);
 
@@ -150,10 +203,10 @@ public class PatientController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePatient(@PathVariable Long id) {
 
-       Optional<Patient> patient = patientsRepository.findById(id);
+        Optional<Patient> patient = patientsRepository.findById(id);
 
-       patientsRepository.findById(id);
+        patientsRepository.deleteById(id);
 
-       return new ResponseEntity<>(patient, HttpStatus.CREATED);
+        return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 }

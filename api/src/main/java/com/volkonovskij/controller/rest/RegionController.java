@@ -4,7 +4,7 @@ import com.volkonovskij.controller.exceptions.IllegalRequestException;
 import com.volkonovskij.controller.requests.region.RegionCreateRequest;
 import com.volkonovskij.controller.requests.region.RegionUpdateRequest;
 import com.volkonovskij.domain.Region;
-import com.volkonovskij.repository.RegionsDataRepository;
+import com.volkonovskij.repository.RegionsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,7 +37,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RegionController {
 
-    private final RegionsDataRepository regionsRepository;
+    private final RegionsRepository regionsRepository;
 
     private final ConversionService conversionService;
 
@@ -93,10 +93,10 @@ public class RegionController {
                     )
             }
     )
-    @GetMapping("/{regionId}")
-    public ResponseEntity<Object> getRegionById(@Parameter(name = "regionId", example = "1", required = true) @PathVariable Long regionId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getRegionById(@Parameter(name = "id", example = "1", required = true) @PathVariable Long id) {
 
-        Optional<Region> region = regionsRepository.findById(regionId);
+        Optional<Region> region = regionsRepository.findById(id);
 
         return new ResponseEntity<>(region, HttpStatus.OK);
     }
@@ -152,8 +152,8 @@ public class RegionController {
 
         Optional<Region> region = regionsRepository.findById(id);
 
-        regionsRepository.findById(id);
+        regionsRepository.deleteById(id);
 
-        return new ResponseEntity<>(region, HttpStatus.CREATED);
+        return new ResponseEntity<>(region, HttpStatus.OK);
     }
 }

@@ -47,7 +47,7 @@ public class Role {
 
     @Column(name = "role_name")
     @Enumerated(EnumType.STRING)
-    private SystemRoles roleName;
+    private SystemRoles roleName = SystemRoles.ROLE_OTHER;
 
     @Column(name = "created")
     private Timestamp created;

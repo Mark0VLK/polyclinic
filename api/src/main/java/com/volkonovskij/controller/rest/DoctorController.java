@@ -5,6 +5,7 @@ import com.volkonovskij.controller.requests.doctor.DoctorCreateRequest;
 import com.volkonovskij.controller.requests.doctor.DoctorUpdateRequest;
 import com.volkonovskij.domain.Doctor;
 import com.volkonovskij.repository.DoctorsRepository;
+import com.volkonovskij.service.DoctorsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,6 +39,8 @@ import java.util.Optional;
 public class DoctorController {
 
     private final DoctorsRepository doctorsRepository;
+
+    private final DoctorsService doctorsService;
 
     private final ConversionService conversionService;
 
@@ -93,10 +96,10 @@ public class DoctorController {
                     )
             }
     )
-    @GetMapping("/{doctorId}")
-    public ResponseEntity<Object> getDoctorById(@Parameter(name = "doctorId", example = "1", required = true) @PathVariable Long doctorId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getDoctorById(@Parameter(name = "id", example = "1", required = true) @PathVariable Long id) {
 
-        Optional<Doctor> doctor = doctorsRepository.findById(doctorId);
+        Optional<Doctor> doctor = doctorsRepository.findById(id);
 
         return new ResponseEntity<>(doctor, HttpStatus.OK);
     }
@@ -121,6 +124,14 @@ public class DoctorController {
 
         return new ResponseEntity<>(activeDoctors, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/specialization/{name}")
+    public ResponseEntity<Object> DoctorsBySpecialization(@PathVariable String name) {
+
+        List<Object[]> result = doctorsService.DoctorsBySpecialization(name);
+
+        return new ResponseEntity<>(Collections.singletonMap("result", result), HttpStatus.OK);
     }
 
     @PostMapping
@@ -154,6 +165,6 @@ public class DoctorController {
 
         doctorsRepository.deleteById(id);
 
-        return new ResponseEntity<>(doctor, HttpStatus.CREATED);
+        return new ResponseEntity<>(doctor, HttpStatus.OK);
     }
 }

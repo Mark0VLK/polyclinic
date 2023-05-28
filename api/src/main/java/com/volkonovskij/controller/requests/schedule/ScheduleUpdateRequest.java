@@ -1,4 +1,4 @@
-package com.volkonovskij.controller.requests.schedules;
+package com.volkonovskij.controller.requests.schedule;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class SchedulesUpdateRequest extends SchedulesCreateRequest {
+public class ScheduleUpdateRequest extends ScheduleCreateRequest {
 
     private Long id;
 }

@@ -18,32 +18,38 @@ import javax.validation.constraints.NotNull;
 public class VisitCreateRequest {
 
     @Schema
-    (
-        requiredMode = Schema.RequiredMode.REQUIRED,
-        type = "Boolean",
-        example = "true",
-        description = "status of the visit: took place or not"
-    )
+            (
+                    requiredMode = Schema.RequiredMode.REQUIRED,
+                    type = "Boolean",
+                    example = "true",
+                    description = "status of the visit: took place or not"
+            )
     @NotNull
     private Boolean status;
 
     @Schema
-    (
-        requiredMode = Schema.RequiredMode.REQUIRED,
-        type = "String",
-        example = "Diagnosis: angina. Medications: cough pills Ambroxol. Recommendations: take a blood test.",
-        description = "doctor's notes"
-    )
+            (
+                    requiredMode = Schema.RequiredMode.REQUIRED,
+                    type = "String",
+                    example = "Diagnosis: angina. Medications: cough pills Ambroxol. Recommendations: take a blood test.",
+                    description = "doctor's notes"
+            )
     @NotNull
     private String note;
 
     @Schema
-    (
-        requiredMode = Schema.RequiredMode.REQUIRED,
-        type = "Float",
-        example = "120.56",
-        description = "admission price"
-    )
+            (
+                    requiredMode = Schema.RequiredMode.REQUIRED,
+                    type = "Float",
+                    example = "120.56",
+                    description = "admission price"
+            )
     @NotNull
     private Float price;
+
+    @NotNull
+    private Long patientCardNumber;
+
+    @NotNull
+    private Long doctorId;
 }

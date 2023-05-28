@@ -6,7 +6,7 @@ import org.springframework.validation.BindingResult;
 
 @Setter
 @Getter
-public class IllegalRequestException extends RuntimeException{
+public class IllegalRequestException extends RuntimeException {
 
     private BindingResult bindingResult;
 

@@ -35,7 +35,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/rest/visits")
 @RequiredArgsConstructor
-public class VisitsController {
+public class VisitController {
 
     private final VisitsRepository visitsRepository;
 
@@ -93,10 +93,10 @@ public class VisitsController {
                     )
             }
     )
-    @GetMapping("/{visitId}")
-    public ResponseEntity<Object> getVisitById(@Parameter(name = "visitId", example = "1", required = true) @PathVariable Long visitId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getVisitById(@Parameter(name = "id", example = "1", required = true) @PathVariable Long id) {
 
-        Optional<Visit> visit = visitsRepository.findById(visitId);
+        Optional<Visit> visit = visitsRepository.findById(id);
 
         return new ResponseEntity<>(visit, HttpStatus.OK);
     }
@@ -152,8 +152,8 @@ public class VisitsController {
 
         Optional<Visit> visit = visitsRepository.findById(id);
 
-        visitsRepository.findById(id);
+        visitsRepository.deleteById(id);
 
-        return new ResponseEntity<>(visit, HttpStatus.CREATED);
+        return new ResponseEntity<>(visit, HttpStatus.OK);
     }
 }

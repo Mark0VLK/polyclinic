@@ -30,7 +30,7 @@ public class UserCreateConverter extends UserBaseConverter<UserCreateRequest, Us
         String resultPassword = request.getPassword() + configuration.getServerPasswordSalt();
         String encode = encoder.encode(resultPassword);
 
-        AuthenticationInfo info =  new AuthenticationInfo(encode, request.getEmail());
+        AuthenticationInfo info = new AuthenticationInfo(encode, request.getEmail());
         user.setAuthenticationInfo(info);
 
         return doConvert(user, request);

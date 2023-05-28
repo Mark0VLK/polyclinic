@@ -1,8 +1,8 @@
 package com.volkonovskij.controller.rest;
 
 import com.volkonovskij.controller.exceptions.IllegalRequestException;
-import com.volkonovskij.controller.requests.schedules.SchedulesCreateRequest;
-import com.volkonovskij.controller.requests.schedules.SchedulesUpdateRequest;
+import com.volkonovskij.controller.requests.schedule.ScheduleCreateRequest;
+import com.volkonovskij.controller.requests.schedule.ScheduleUpdateRequest;
 import com.volkonovskij.domain.Schedule;
 import com.volkonovskij.repository.SchedulesRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,7 +35,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/rest/schedules")
 @RequiredArgsConstructor
-public class SchedulesController {
+public class ScheduleController {
 
     private final SchedulesRepository schedulesRepository;
 
@@ -77,7 +77,7 @@ public class SchedulesController {
     public ResponseEntity<Object> page(@Parameter(name = "page", example = "1", required = true) @PathVariable int page) {
 
         return new ResponseEntity<>(Collections.singletonMap("result",
-                schedulesRepository.findAll(PageRequest.of(page, 1))), HttpStatus.OK);
+                schedulesRepository.findAll(PageRequest.of(page, 5))), HttpStatus.OK);
     }
 
     @Operation(
@@ -93,10 +93,10 @@ public class SchedulesController {
                     )
             }
     )
-    @GetMapping("/{scheduleId}")
-    public ResponseEntity<Object> getScheduleById(@Parameter(name = "scheduleId", example = "1", required = true) @PathVariable Long scheduleId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getScheduleById(@Parameter(name = "id", example = "1", required = true) @PathVariable Long id) {
 
-        Optional<Schedule> schedule = schedulesRepository.findById(scheduleId);
+        Optional<Schedule> schedule = schedulesRepository.findById(id);
 
         return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
@@ -124,7 +124,7 @@ public class SchedulesController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveSchedule(@Valid @RequestBody SchedulesCreateRequest request, BindingResult result) {
+    public ResponseEntity<Object> saveSchedule(@Valid @RequestBody ScheduleCreateRequest request, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new IllegalRequestException(result);
@@ -138,7 +138,7 @@ public class SchedulesController {
     }
 
     @PutMapping
-    public ResponseEntity<Object> updateSchedule(@RequestBody SchedulesUpdateRequest request) {
+    public ResponseEntity<Object> updateSchedule(@RequestBody ScheduleUpdateRequest request) {
 
         Schedule schedule = conversionService.convert(request, Schedule.class);
 

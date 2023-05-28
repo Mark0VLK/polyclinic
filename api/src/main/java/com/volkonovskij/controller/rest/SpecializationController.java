@@ -35,7 +35,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/rest/specializations")
 @RequiredArgsConstructor
-public class SpecializationsController {
+public class SpecializationController {
 
     private final SpecializationsRepository specializationsRepository;
 
@@ -93,10 +93,10 @@ public class SpecializationsController {
                     )
             }
     )
-    @GetMapping("/{specializationId}")
-    public ResponseEntity<Object> getSpecializationById(@Parameter(name = "specializationId", example = "1", required = true) @PathVariable Long specializationId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getSpecializationById(@Parameter(name = "id", example = "1", required = true) @PathVariable Long id) {
 
-        Optional<Specialization> specialization = specializationsRepository.findById(specializationId);
+        Optional<Specialization> specialization = specializationsRepository.findById(id);
 
         return new ResponseEntity<>(specialization, HttpStatus.OK);
     }

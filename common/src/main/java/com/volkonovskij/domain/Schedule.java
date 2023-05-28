@@ -1,6 +1,6 @@
 package com.volkonovskij.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -16,22 +16,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(exclude = {
-        "doctors"
+        "doctor"
 })
 @ToString(exclude = {
-        "doctors"
+        "doctor"
 })
 @Setter
 @Getter
@@ -63,11 +60,8 @@ public class Schedule {
     @Column(name = "is_deleted")
     private Boolean isDeleted = false;
 
-    @ManyToMany
-    @JoinTable(name = "l_doctors_schedules",
-            joinColumns = @JoinColumn(name = "schedule_id"),
-            inverseJoinColumns = @JoinColumn(name = "doctor_id")
-    )
-    @JsonIgnoreProperties("schedules")
-    private Set<Doctor> doctors = Collections.emptySet();
+    @ManyToOne
+    @JoinColumn(name = "id_doctor")
+    @JsonBackReference
+    private Doctor doctor;
 }
