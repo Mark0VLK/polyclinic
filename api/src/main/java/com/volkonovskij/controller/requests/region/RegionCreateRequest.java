@@ -18,24 +18,22 @@ import javax.validation.constraints.Positive;
 @Schema(description = "Object with information about the region")
 public class RegionCreateRequest {
 
-    @Schema
-            (
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    type = "Long",
-                    example = "54",
-                    description = "region number"
-            )
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "Long",
+            example = "54",
+            description = "region number"
+    )
     @NotNull
     @Positive
     private Long number;
 
-    @Schema
-            (
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    type = "String",
-                    example = "Suvorov Street - Sovetskaya Square",
-                    description = "the range of addresses belonging to the region"
-            )
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "String",
+            example = "Suvorov Street - Sovetskaya Square",
+            description = "the range of addresses belonging to the region"
+    )
     @NotNull
     private String addressRange;
 }

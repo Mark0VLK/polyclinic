@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -20,48 +20,51 @@ import java.time.LocalDateTime;
 @Schema(description = "Object with information about user documents")
 public class DocumentCreateRequest {
 
-    @Schema
-            (
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    type = "String",
-                    example = "KH",
-                    description = "passport series"
-            )
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "String",
+            example = "KH",
+            description = "passport series"
+    )
+    @Pattern(regexp = "^[A-Z]{2}$")
     @NotNull
-    @Size(min = 2, max = 2)
     private String passportSeries;
 
-    @Schema
-            (
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    type = "String",
-                    example = "1237654",
-                    description = "passport number"
-            )
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "Long",
+            example = "1237654",
+            description = "passport number"
+    )
+    @Pattern(regexp = "^\\d{7}$")
     @NotNull
     private Long passportNumber;
 
-    @Schema
-            (
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    type = "String",
-                    example = "7637905A001PB6",
-                    description = "passport identification number"
-            )
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "String",
+            example = "7637905A001PB6",
+            description = "passport identification number"
+    )
+    @Pattern(regexp = "^[0-9]{7}[A-Z]{1}[0-9]{3}[A-Z]{2}[0-9]{1}$")
     @NotNull
-    @Size(min = 14, max = 14)
     private String identificationNo;
 
-    @Schema
-            (
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    type = "Timestamp",
-                    example = "1684956507000",
-                    description = "passport expiration date"
-            )
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "Timestamp",
+            example = "1684956507000",
+            description = "passport expiration date"
+    )
     @NotNull
     private Timestamp expirationDate = Timestamp.valueOf(LocalDateTime.now());
 
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "Long",
+            example = "2",
+            description = "id of the user who owns this document"
+    )
     @NotNull
     private Long userId;
 }

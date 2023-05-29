@@ -18,16 +18,21 @@ import javax.validation.constraints.NotNull;
 @Schema(description = "Object with information about the role at the registration stage")
 public class RoleCreateRequest {
 
-    @Schema
-            (
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    type = "SystemRoles",
-                    example = "ROLE_OTHER",
-                    description = "user role"
-            )
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "SystemRoles",
+            example = "ROLE_OTHER",
+            description = "user role"
+    )
     @NotNull
     private SystemRoles roleName;
 
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "Long",
+            example = "ROLE_OTHER",
+            description = "id of the user to whom this role belongs"
+    )
     @NotNull
     private Long userId;
 }

@@ -18,14 +18,13 @@ import javax.validation.constraints.Size;
 @Schema(description = "Object with information about the doctor's specialization")
 public class SpecializationCreateRequest {
 
-    @Schema
-            (
-                    requiredMode = Schema.RequiredMode.REQUIRED,
-                    type = "String",
-                    example = "traumatologist",
-                    description = "name of the doctor's specialization"
-            )
-    @NotNull
+    @Schema(
+            requiredMode = Schema.RequiredMode.REQUIRED,
+            type = "String",
+            example = "traumatologist",
+            description = "name of the doctor's specialization"
+    )
     @Size(min = 3, max = 30)
+    @NotNull
     private String name;
 }
