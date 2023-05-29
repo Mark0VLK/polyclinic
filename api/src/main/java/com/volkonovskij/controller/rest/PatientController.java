@@ -10,6 +10,7 @@ import com.volkonovskij.repository.PatientsRepository;
 import com.volkonovskij.service.PatientsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -99,9 +101,9 @@ public class PatientController {
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getPatientById(@Parameter(name = "patientId", example = "1", required = true) @PathVariable Long patientId) {
+    public ResponseEntity<Object> getPatientById(@Parameter(name = "patientId", example = "1", required = true) @PathVariable Long id) {
 
-        Optional<Patient> patient = patientsRepository.findById(patientId);
+        Optional<Patient> patient = patientsRepository.findById(id);
 
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
@@ -128,8 +130,41 @@ public class PatientController {
 
     }
 
+
+    @Operation(
+            summary = "Find the patient's address and phone number",
+            description = "find the address and phone number of the patient by first and last name",
+            parameters = {
+                    @Parameter(
+                            name = "name",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "Mark",
+                                    type = "string",
+                                    description = "patient's name")
+                    ),
+                    @Parameter(
+                            name = "surname",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "Volkonovskij",
+                                    type = "string",
+                                    description = "patient's last name"))
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully loaded address and phone number",
+                            content = @Content(mediaType = "application/json")
+                    )
+            }
+    )
     @GetMapping("find/phoneAndAddress")
-    public ResponseEntity<Object> phoneNumberByNameAndSurname(@RequestBody SearchCriteria criteria, BindingResult result) {
+    public ResponseEntity<Object> phoneNumberByNameAndSurname(@Parameter(hidden = true) @Valid @ModelAttribute SearchCriteria criteria, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new IllegalRequestException(result);

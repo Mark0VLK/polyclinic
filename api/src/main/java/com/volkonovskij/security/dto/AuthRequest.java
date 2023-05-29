@@ -22,8 +22,8 @@ public class AuthRequest {
     @Schema(
             requiredMode = Schema.RequiredMode.REQUIRED,
             type = "String",
-            example = "Mark_MV",
-            description = "user login"
+            example = "renata_test15@gmail.com",
+            description = "user email"
     )
     @Size(min = 2, max = 20)
     @NotNull
@@ -32,7 +32,7 @@ public class AuthRequest {
     @Schema(
             requiredMode = Schema.RequiredMode.REQUIRED,
             type = "String",
-            example = "Qwerty12345",
+            example = "Mark10mark10",
             description = "user password"
     )
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$")

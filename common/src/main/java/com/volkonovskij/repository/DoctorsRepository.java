@@ -11,7 +11,8 @@ public interface DoctorsRepository extends JpaRepository<Doctor, Long> {
     List<Doctor> findByIsDeletedIsFalse();
 
     @Query(value = "select d.surname, s.date, s.time_start, s.time_finish from doctors as d inner join specializations p " +
-            "on p.id = d.id_specialization join schedules s on d.id = s.id_doctor where lower(p.name) =:specialization",
+            "on p.id = d.id_specialization join schedules s on d.id = s.id_doctor where lower(p.name) =:specialization and " +
+            "d.is_deleted is false",
             nativeQuery = true)
     List<Object[]> DoctorsBySpecialization(String specialization);
 }
