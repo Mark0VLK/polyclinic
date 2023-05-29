@@ -70,15 +70,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/swagger-ui.html#").permitAll()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.POST, "/rest/specializations", "/rest/regions", "/rest/schedules").hasAnyRole("ADMIN", "MODERATOR")
-//                .antMatchers(HttpMethod.PUT, "/rest/specializations", "/rest/regions", "/rest/schedules").hasAnyRole("ADMIN", "MODERATOR")
-//                .antMatchers(HttpMethod.POST, "/rest/roles/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/rest/roles/**").hasRole("ADMIN")
-//                .antMatchers("/rest/roles/**").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/rest/specializations", "/rest/regions", "/rest/schedules").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers(HttpMethod.PUT, "/rest/specializations", "/rest/regions", "/rest/schedules").hasAnyRole("ADMIN", "MODERATOR")
+                .antMatchers(HttpMethod.POST, "/rest/roles/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/rest/roles/**").hasRole("ADMIN")
+                .antMatchers("/rest/roles/**").hasAnyRole("ADMIN", "MODERATOR")
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/rest/**").permitAll()
-                //.antMatchers("/rest/**").hasAnyRole("ADMIN", "USER", "MODERATOR")
+                .antMatchers("/rest/**").hasAnyRole("ADMIN", "USER", "MODERATOR")
                 .anyRequest().authenticated();
 
         // Custom JWT based authentication
