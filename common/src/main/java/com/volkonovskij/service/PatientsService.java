@@ -1,8 +1,5 @@
 package com.volkonovskij.service;
 
-import com.volkonovskij.domain.Patient;
-import com.volkonovskij.domain.system.Gender;
-
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -12,7 +9,7 @@ public interface PatientsService {
 
     List<Object[]> medicalHistory(String name, String surname);
 
-    List<Patient> findByGenderAndBirthDate(Gender gender, Timestamp birthDate);
+    List<Object[]> findByGenderAndRegionNumber(Timestamp data, Long regionNumber);
 
     Float unpaidAmount(String name, String surname);
 }

@@ -46,7 +46,7 @@ public class Document {
     private String passportSeries;
 
     @Column(name = "passport_number")
-    private Long passportNumber;
+    private String passportNumber;
 
     @Column(name = "identification_no")
     private String identificationNo;

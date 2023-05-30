@@ -7,6 +7,7 @@ import com.volkonovskij.domain.Document;
 import com.volkonovskij.repository.DocumentsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,10 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,11 +46,11 @@ public class DocumentController {
 
     @Operation(
             summary = "Find all documents",
-            description = "Find All Documents without limitations",
+            description = "Find all documents without limitations",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Documents",
+                            description = "Successfully loaded documents",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = Document.class))
@@ -63,12 +64,12 @@ public class DocumentController {
     }
 
     @Operation(
-            summary = "Spring Data Document Search with Pageable Params",
-            description = "Load page by number with sort and offset params",
+            summary = "Search for documents with output to the page",
+            description = "load page by number with sort and offset params",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Document",
+                            description = "Successfully loaded documents",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = PageImpl.class))
@@ -84,11 +85,11 @@ public class DocumentController {
 
     @Operation(
             summary = "Find the document",
-            description = "Find the document by id",
+            description = "find the document by id",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Documents",
+                            description = "Successfully loaded document",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = Document.class))
@@ -105,11 +106,11 @@ public class DocumentController {
 
     @Operation(
             summary = "Search through all active documents",
-            description = "Search for all documents that have not expired",
+            description = "search for all documents that have not expired",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded active Documents",
+                            description = "Successfully loaded active documents",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = PageImpl.class))
@@ -125,8 +126,74 @@ public class DocumentController {
 
     }
 
+    @Operation(
+            summary = "Create a new document",
+            description = "create a new document",
+            parameters = {
+                    @Parameter(
+                            name = "passportSeries",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "KH",
+                                    type = "string",
+                                    description = "passport series")
+                    ),
+                    @Parameter(
+                            name = "passportNumber",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "1237654",
+                                    type = "string",
+                                    description = "passport number")
+                    ),
+                    @Parameter(
+                            name = "identificationNo",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "7637905A001PB6",
+                                    type = "string",
+                                    description = "passport identification number")
+                    ),
+                    @Parameter(
+                            name = "expirationDate",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "2023-05-30 00:00:00",
+                                    type = "string", format = "date-time",
+                                    description = "passport expiration date")
+                    ),
+                    @Parameter(
+                            name = "userId",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "4",
+                                    type = "number",
+                                    description = "id of the user who owns this document")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "CREATED",
+                            description = "Successfully created document",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Document.class)
+                            )
+                    )
+            }
+    )
     @PostMapping
-    public ResponseEntity<Object> saveDocument(@Valid @RequestBody DocumentCreateRequest request, BindingResult result) {
+    public ResponseEntity<Object> saveDocument(@Parameter(hidden = true) @Valid @ModelAttribute DocumentCreateRequest request, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new IllegalRequestException(result);
@@ -139,8 +206,84 @@ public class DocumentController {
         return new ResponseEntity<>(document, HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "Edit an existing document",
+            description = "edit an existing document",
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "18",
+                                    type = "number",
+                                    description = "document id")
+                    ),
+                    @Parameter(
+                            name = "passportSeries",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "KH",
+                                    type = "string",
+                                    description = "passport series")
+                    ),
+                    @Parameter(
+                            name = "passportNumber",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "1237654",
+                                    type = "string",
+                                    description = "passport number")
+                    ),
+                    @Parameter(
+                            name = "identificationNo",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "7637905A001PB6",
+                                    type = "string",
+                                    description = "passport identification number")
+                    ),
+                    @Parameter(
+                            name = "expirationDate",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "2023-05-30 00:00:00",
+                                    type = "string", format = "date-time",
+                                    description = "passport expiration date")
+                    ),
+                    @Parameter(
+                            name = "userId",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "4",
+                                    type = "number",
+                                    description = "id of the user who owns this document")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully changed the document information",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Document.class)
+                            )
+                    )
+            }
+    )
     @PutMapping
-    public ResponseEntity<Object> updateDocument(@RequestBody DocumentUpdateRequest request) {
+    public ResponseEntity<Object> updateDocument(@Parameter(hidden = true) @Valid @ModelAttribute DocumentUpdateRequest request) {
 
         Document document = conversionService.convert(request, Document.class);
 
@@ -149,8 +292,20 @@ public class DocumentController {
         return new ResponseEntity<>(document, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Delete a document by id",
+            description = "delete a document by id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "The document has been successfully removed",
+                            content = @Content(
+                                    mediaType = "application/json")
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteDocument(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteDocument(@Parameter(name = "id", example = "2", required = true) @PathVariable Long id) {
 
         Optional<Document> document = documentsRepository.findById(id);
 

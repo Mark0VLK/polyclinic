@@ -7,6 +7,7 @@ import com.volkonovskij.domain.Specialization;
 import com.volkonovskij.repository.SpecializationsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,10 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,11 +44,11 @@ public class SpecializationController {
 
     @Operation(
             summary = "Find all specializations",
-            description = "Find All Specializations without limitations",
+            description = "find all specializations without limitations",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Specializations",
+                            description = "Successfully loaded specializations",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = Specialization.class))
@@ -61,12 +62,12 @@ public class SpecializationController {
     }
 
     @Operation(
-            summary = "Spring Data Specialization Search with Pageable Params",
-            description = "Load page by number with sort and offset params",
+            summary = "Search for specializations with output to the page",
+            description = "load page by number with sort and offset params",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Specialization",
+                            description = "Successfully loaded specializations",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = PageImpl.class))
@@ -82,11 +83,11 @@ public class SpecializationController {
 
     @Operation(
             summary = "Find a specialization",
-            description = "Find the specialization by its id",
+            description = "find the specialization by its id",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Specialization",
+                            description = "Successfully loaded specialization",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = Specialization.class))
@@ -103,11 +104,11 @@ public class SpecializationController {
 
     @Operation(
             summary = "Search for all active specializations",
-            description = "Search for all active specializations",
+            description = "search for all active specializations",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded active Specializations",
+                            description = "Successfully loaded active specializations",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = PageImpl.class))
@@ -123,8 +124,34 @@ public class SpecializationController {
 
     }
 
+    @Operation(
+            summary = "Create a new specialization",
+            description = "create a new specialization",
+            parameters = {
+                    @Parameter(
+                            name = "name",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "traumatologist",
+                                    type = "string",
+                                    description = "name of the doctor's specialization")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "CREATED",
+                            description = "Successfully created specialization",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Specialization.class)
+                            )
+                    )
+            }
+    )
     @PostMapping
-    public ResponseEntity<Object> saveSpecialization(@Valid @RequestBody SpecializationCreateRequest request, BindingResult result) {
+    public ResponseEntity<Object> saveSpecialization(@Parameter(hidden = true) @Valid @ModelAttribute SpecializationCreateRequest request, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new IllegalRequestException(result);
@@ -137,8 +164,44 @@ public class SpecializationController {
         return new ResponseEntity<>(specialization, HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "Edit an existing specialization",
+            description = "Edit an existing specialization",
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "9",
+                                    type = "number",
+                                    description = "specialization id")
+                    ),
+                    @Parameter(
+                            name = "name",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "traumatologist",
+                                    type = "string",
+                                    description = "name of the doctor's specialization")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully changed the specialization information",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Specialization.class)
+                            )
+                    )
+            }
+    )
     @PutMapping
-    public ResponseEntity<Object> updateSpecialization(@RequestBody SpecializationUpdateRequest request) {
+    public ResponseEntity<Object> updateSpecialization(@Parameter(hidden = true) @Valid @ModelAttribute SpecializationUpdateRequest request) {
 
         Specialization specialization = conversionService.convert(request, Specialization.class);
 
@@ -147,8 +210,20 @@ public class SpecializationController {
         return new ResponseEntity<>(specialization, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Delete a specialization by id",
+            description = "delete a specialization by id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "The specialization has been successfully removed",
+                            content = @Content(
+                                    mediaType = "application/json")
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteUser(@Parameter(name = "id", example = "2", required = true) @PathVariable Long id) {
 
         Optional<Specialization> specialization = specializationsRepository.findById(id);
 

@@ -7,6 +7,7 @@ import com.volkonovskij.domain.Schedule;
 import com.volkonovskij.repository.SchedulesRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,10 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,11 +44,11 @@ public class ScheduleController {
 
     @Operation(
             summary = "Find all schedules",
-            description = "Find All Schedules without limitations",
+            description = "find all schedules without limitations",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Schedules",
+                            description = "Successfully loaded schedules",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = Schedule.class))
@@ -61,12 +62,12 @@ public class ScheduleController {
     }
 
     @Operation(
-            summary = "Spring Data Schedule Search with Pageable Params",
-            description = "Load page by number with sort and offset params",
+            summary = "Search for schedules with output to the page",
+            description = "load page by number with sort and offset params",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Schedule",
+                            description = "Successfully loaded schedules",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = PageImpl.class))
@@ -82,11 +83,11 @@ public class ScheduleController {
 
     @Operation(
             summary = "Find the schedule",
-            description = "Find the schedule by its id",
+            description = "find the schedule by its id",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Schedule",
+                            description = "Successfully loaded schedule",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = Schedule.class))
@@ -103,11 +104,11 @@ public class ScheduleController {
 
     @Operation(
             summary = "Search for all active schedules",
-            description = "Search for all active schedules",
+            description = "search for all active schedules",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded active Schedules",
+                            description = "Successfully loaded active schedules",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = PageImpl.class))
@@ -123,8 +124,64 @@ public class ScheduleController {
 
     }
 
+    @Operation(
+            summary = "Create a new schedule",
+            description = "create a new schedule",
+            parameters = {
+                    @Parameter(
+                            name = "date",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "2023-05-30 00:00:00",
+                                    type = "string", format = "date-time",
+                                    description = "date")
+                    ),
+                    @Parameter(
+                            name = "timeStart",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "2023-05-30 00:00:00",
+                                    type = "string", format = "date-time",
+                                    description = "reception start time")
+                    ),
+                    @Parameter(
+                            name = "timeFinish",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "2023-05-30 00:00:00",
+                                    type = "string", format = "date-time",
+                                    description = "reception end time")
+                    ),
+                    @Parameter(
+                            name = "doctorID",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "8",
+                                    type = "number",
+                                    description = "id of the doctor who owns this schedule")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "CREATED",
+                            description = "Successfully created schedule",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Schedule.class)
+                            )
+                    )
+            }
+    )
     @PostMapping
-    public ResponseEntity<Object> saveSchedule(@Valid @RequestBody ScheduleCreateRequest request, BindingResult result) {
+    public ResponseEntity<Object> saveSchedule(@Parameter(hidden = true) @Valid @ModelAttribute ScheduleCreateRequest request, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new IllegalRequestException(result);
@@ -137,8 +194,74 @@ public class ScheduleController {
         return new ResponseEntity<>(schedule, HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "Edit an existing schedule",
+            description = "Edit an existing schedule",
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "8",
+                                    type = "number",
+                                    description = "id schedule")
+                    ),
+                    @Parameter(
+                            name = "date",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "2023-05-30 00:00:00",
+                                    type = "string", format = "date-time",
+                                    description = "date")
+                    ),
+                    @Parameter(
+                            name = "timeStart",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "2023-05-30 00:00:00",
+                                    type = "string", format = "date-time",
+                                    description = "reception start time")
+                    ),
+                    @Parameter(
+                            name = "timeFinish",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "2023-05-30 00:00:00",
+                                    type = "string", format = "date-time",
+                                    description = "reception end time")
+                    ),
+                    @Parameter(
+                            name = "doctorID",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "8",
+                                    type = "number",
+                                    description = "id of the doctor who owns this schedule")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully changed the schedule information",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Schedule.class)
+                            )
+                    )
+            }
+    )
     @PutMapping
-    public ResponseEntity<Object> updateSchedule(@RequestBody ScheduleUpdateRequest request) {
+    public ResponseEntity<Object> updateSchedule(@Parameter(hidden = true) @Valid @ModelAttribute ScheduleUpdateRequest request) {
 
         Schedule schedule = conversionService.convert(request, Schedule.class);
 
@@ -147,8 +270,20 @@ public class ScheduleController {
         return new ResponseEntity<>(schedule, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Delete a schedule by id",
+            description = "delete a schedule by id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "The schedule has been successfully removed",
+                            content = @Content(
+                                    mediaType = "application/json")
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteSchedule(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteSchedule(@Parameter(name = "id", example = "2", required = true) @PathVariable Long id) {
 
         Optional<Schedule> schedule = schedulesRepository.findById(id);
 

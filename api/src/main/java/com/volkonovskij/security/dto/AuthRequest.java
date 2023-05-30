@@ -25,7 +25,7 @@ public class AuthRequest {
             example = "renata_test15@gmail.com",
             description = "user email"
     )
-    @Size(min = 2, max = 20)
+    @Size(min = 2, max = 80)
     @NotNull
     private String login;
 

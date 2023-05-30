@@ -7,6 +7,7 @@ import com.volkonovskij.domain.Region;
 import com.volkonovskij.repository.RegionsRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,10 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,11 +44,11 @@ public class RegionController {
 
     @Operation(
             summary = "Find all regions",
-            description = "Find All Regions without limitations",
+            description = "find all regions without limitations",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Regions",
+                            description = "Successfully loaded regions",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = Region.class))
@@ -61,12 +62,12 @@ public class RegionController {
     }
 
     @Operation(
-            summary = "Spring Data Region Search with Pageable Params",
-            description = "Load page by number with sort and offset params",
+            summary = "Search for regions with output to the page",
+            description = "load page by number with sort and offset params",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Region",
+                            description = "Successfully loaded regions",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = PageImpl.class))
@@ -82,11 +83,11 @@ public class RegionController {
 
     @Operation(
             summary = "Find the region",
-            description = "Find the region by id",
+            description = "find the region by id",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded Region",
+                            description = "Successfully loaded region",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = Region.class))
@@ -103,11 +104,11 @@ public class RegionController {
 
     @Operation(
             summary = "Search for all active regions",
-            description = "Search for all active regions",
+            description = "search for all active regions",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
-                            description = "Successfully loaded active Regions",
+                            description = "Successfully loaded active regions",
                             content = @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = PageImpl.class))
@@ -123,8 +124,44 @@ public class RegionController {
 
     }
 
+    @Operation(
+            summary = "Create a new region",
+            description = "create a new region",
+            parameters = {
+                    @Parameter(
+                            name = "number",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "18",
+                                    type = "number",
+                                    description = "region number")
+                    ),
+                    @Parameter(
+                            name = "addressRange",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "Suvorov Street - Sovetskaya Square",
+                                    type = "string",
+                                    description = "the range of addresses belonging to the region")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "CREATED",
+                            description = "Successfully created region",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Region.class)
+                            )
+                    )
+            }
+    )
     @PostMapping
-    public ResponseEntity<Object> saveRegion(@Valid @RequestBody RegionCreateRequest request, BindingResult result) {
+    public ResponseEntity<Object> saveRegion(@Parameter(hidden = true) @Valid @ModelAttribute RegionCreateRequest request, BindingResult result) {
 
         if (result.hasErrors()) {
             throw new IllegalRequestException(result);
@@ -137,8 +174,54 @@ public class RegionController {
         return new ResponseEntity<>(region, HttpStatus.CREATED);
     }
 
+    @Operation(
+            summary = "Edit an existing region",
+            description = "edit an existing region",
+            parameters = {
+                    @Parameter(
+                            name = "id",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "8",
+                                    type = "number",
+                                    description = "region id")
+                    ),
+                    @Parameter(
+                            name = "number",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "18",
+                                    type = "number",
+                                    description = "region number")
+                    ),
+                    @Parameter(
+                            name = "addressRange",
+                            required = true,
+                            in = ParameterIn.QUERY,
+                            schema = @Schema(
+                                    requiredMode = Schema.RequiredMode.REQUIRED,
+                                    example = "Suvorov Street - Sovetskaya Square",
+                                    type = "string",
+                                    description = "the range of addresses belonging to the region")
+                    )
+            },
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "Successfully changed the region information",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Region.class)
+                            )
+                    )
+            }
+    )
     @PutMapping
-    public ResponseEntity<Object> updateRegion(@RequestBody RegionUpdateRequest request) {
+    public ResponseEntity<Object> updateRegion(@Parameter(hidden = true) @Valid @ModelAttribute RegionUpdateRequest request) {
 
         Region region = conversionService.convert(request, Region.class);
 
@@ -147,8 +230,20 @@ public class RegionController {
         return new ResponseEntity<>(region, HttpStatus.OK);
     }
 
+    @Operation(
+            summary = "Delete a region by id",
+            description = "delete a region by id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "OK",
+                            description = "The region has been successfully removed",
+                            content = @Content(
+                                    mediaType = "application/json")
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteRegion(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteRegion(@Parameter(name = "id", example = "2", required = true) @PathVariable Long id) {
 
         Optional<Region> region = regionsRepository.findById(id);
 

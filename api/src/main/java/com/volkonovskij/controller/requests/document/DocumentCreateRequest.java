@@ -32,13 +32,13 @@ public class DocumentCreateRequest {
 
     @Schema(
             requiredMode = Schema.RequiredMode.REQUIRED,
-            type = "Long",
+            type = "string",
             example = "1237654",
             description = "passport number"
     )
-    @Pattern(regexp = "^\\d{7}$")
+    @Pattern(regexp = "^[0-9]{7}$")
     @NotNull
-    private Long passportNumber;
+    private String passportNumber;
 
     @Schema(
             requiredMode = Schema.RequiredMode.REQUIRED,

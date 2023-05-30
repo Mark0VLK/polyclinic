@@ -24,8 +24,8 @@ public class RegionCreateRequest {
             example = "54",
             description = "region number"
     )
-    @NotNull
     @Positive
+    @NotNull
     private Long number;
 
     @Schema(

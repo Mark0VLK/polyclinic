@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +47,7 @@ public class DoctorController {
 
     @Operation(
             summary = "Find all doctors",
-            description = "Find all doctors without limitations",
+            description = "find all doctors without limitations",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
@@ -67,7 +66,7 @@ public class DoctorController {
 
     @Operation(
             summary = "Search for doctors with output to the page",
-            description = "Load page by number with sort and offset params",
+            description = "load page by number with sort and offset params",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
@@ -87,7 +86,7 @@ public class DoctorController {
 
     @Operation(
             summary = "Find a doctor",
-            description = "Find the doctor by his id",
+            description = "find the doctor by his id",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",
@@ -108,7 +107,7 @@ public class DoctorController {
 
     @Operation(
             summary = "Search for all active doctors",
-            description = "Search for all active doctors",
+            description = "search for all active doctors",
             responses = {
                     @ApiResponse(
                             responseCode = "OK",

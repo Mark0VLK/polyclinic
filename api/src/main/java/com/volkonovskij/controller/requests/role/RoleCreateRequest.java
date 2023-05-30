@@ -22,7 +22,7 @@ public class RoleCreateRequest {
             requiredMode = Schema.RequiredMode.REQUIRED,
             type = "SystemRoles",
             example = "ROLE_OTHER",
-            description = "user role"
+            description = "name of the role in the system"
     )
     @NotNull
     private SystemRoles roleName;
@@ -30,7 +30,7 @@ public class RoleCreateRequest {
     @Schema(
             requiredMode = Schema.RequiredMode.REQUIRED,
             type = "Long",
-            example = "ROLE_OTHER",
+            example = "15",
             description = "id of the user to whom this role belongs"
     )
     @NotNull

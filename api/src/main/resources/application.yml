@@ -1,5 +1,5 @@
 spring:
-#  main.allow-circular-references: true
+  #  main.allow-circular-references: true
   datasource:
     hikari:
       jdbc-url: "jdbc:postgresql://localhost:5432/db1?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"

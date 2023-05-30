@@ -1,7 +1,5 @@
 package com.volkonovskij.service.impl;
 
-import com.volkonovskij.domain.Patient;
-import com.volkonovskij.domain.system.Gender;
 import com.volkonovskij.repository.PatientsRepository;
 import com.volkonovskij.service.PatientsService;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +25,8 @@ public class PatientServiceImpl implements PatientsService {
     }
 
     @Override
-    public List<Patient> findByGenderAndBirthDate(Gender gender, Timestamp birthDate) {
-        return repository.findByGenderAndBirthDate(gender, birthDate);
+    public List<Object[]> findByGenderAndRegionNumber(Timestamp data, Long regionNumber) {
+        return repository.findByGenderAndRegionNumber(data, regionNumber);
     }
 
     @Override
