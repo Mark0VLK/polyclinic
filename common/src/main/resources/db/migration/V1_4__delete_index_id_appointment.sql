@@ -1,1 +1,0 @@
-drop index visits_id_appointment_index;

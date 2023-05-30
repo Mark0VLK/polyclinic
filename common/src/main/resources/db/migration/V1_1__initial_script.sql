@@ -1,18 +1,19 @@
 create table public.users
 (
-    id           bigserial
+    id            bigserial
         primary key,
-    login        varchar(30)           not null
+    login         varchar(30)           not null
         unique,
-    password     varchar(20)           not null
+    user_password varchar(100)          not null
+        constraint users_password_key
+            unique,
+    phone_number  varchar(15)           not null
         unique,
-    phone_number varchar(15)           not null
+    email         varchar(100)          not null
         unique,
-    email        varchar(60)           not null
-        unique,
-    created      timestamp(6)          not null,
-    changed      timestamp(6)          not null,
-    is_deleted   boolean default false not null
+    created       timestamp(6)          not null,
+    changed       timestamp(6)          not null,
+    is_deleted    boolean default false not null
 );
 
 alter table public.users
@@ -55,7 +56,8 @@ create table public.patients
     is_deleted    boolean     default false                             not null,
     id_user       bigint                                                not null
         constraint patients_users_id_fk
-            references public.users,
+            references public.users
+            on update cascade on delete cascade,
     region_number bigint                                                not null
         constraint patients_regions_number_fk
             references public.regions (number)
@@ -85,33 +87,6 @@ create index patients_region_number_index
 
 create index patients_surname_index
     on public.patients (surname);
-
-create table public.schedules
-(
-    id          bigserial
-        primary key,
-    date        timestamp(6)          not null,
-    time_start  timestamp(6)          not null,
-    time_finish timestamp(6)          not null,
-    created     timestamp(6)          not null,
-    changed     timestamp             not null,
-    is_deleted  boolean default false not null
-);
-
-alter table public.schedules
-    owner to dev;
-
-create index schedules_changed_index
-    on public.schedules (changed desc);
-
-create index schedules_date_index
-    on public.schedules (date desc);
-
-create index schedules_date_time_start_index
-    on public.schedules (date desc, time_start desc);
-
-create index schedules_time_start_index
-    on public.schedules (time_start desc);
 
 create table public.specializations
 (
@@ -159,6 +134,37 @@ create table public.doctors
 alter table public.doctors
     owner to dev;
 
+create table public.schedules
+(
+    id          bigserial
+        primary key,
+    date        timestamp(6)          not null,
+    time_start  timestamp(6)          not null,
+    time_finish timestamp(6)          not null,
+    created     timestamp(6)          not null,
+    changed     timestamp             not null,
+    is_deleted  boolean default false not null,
+    id_doctor   bigint                not null
+        constraint schedules_doctors_id_fk
+            references public.doctors
+            on update cascade on delete cascade
+);
+
+alter table public.schedules
+    owner to dev;
+
+create index schedules_changed_index
+    on public.schedules (changed desc);
+
+create index schedules_date_index
+    on public.schedules (date desc);
+
+create index schedules_date_time_start_index
+    on public.schedules (date desc, time_start desc);
+
+create index schedules_time_start_index
+    on public.schedules (time_start desc);
+
 create index doctors_changed_index
     on public.doctors (changed desc);
 
@@ -191,7 +197,6 @@ create table public.visits
         constraint visits_patients_card_number_fk
             references public.patients
             on update cascade on delete cascade,
-    id_appointment      bigint                not null,
     created             timestamp(6)          not null,
     changed             timestamp(6)          not null,
     is_deleted          boolean default false not null,
@@ -209,9 +214,6 @@ create index visits_changed_index
 
 create index visits_created_index
     on public.visits (created desc);
-
-create index visits_id_appointment_index
-    on public.visits (id_appointment);
 
 create index visits_id_doctor_index
     on public.visits (id_doctor);
@@ -247,48 +249,22 @@ create index roles_changed_index
 create index roles_created_index
     on public.roles (created);
 
-create table public.l_doctors_schedules
-(
-    id          bigserial
-        primary key,
-    doctor_id   bigint       not null
-        constraint l_doctors_schedules_doctors_id_fk
-            references public.doctors
-            on update cascade on delete cascade,
-    schedule_id bigint       not null
-        constraint l_doctors_schedules_schedules_id_fk
-            references public.schedules
-            on update cascade on delete cascade,
-    created     timestamp(6) not null,
-    changed     timestamp(6) not null
-);
-
-alter table public.l_doctors_schedules
-    owner to postgres;
-
-create index l_doctors_schedules_changed_index
-    on public.l_doctors_schedules (changed desc);
-
-create index l_doctors_schedules_doctor_id_index
-    on public.l_doctors_schedules (doctor_id);
-
-create index l_doctors_schedules_schedule_id_index
-    on public.l_doctors_schedules (schedule_id);
-
 create table public.personal_doc
 (
-    id              bigserial
+    id                bigserial
         primary key,
-    passport_series varchar(20)  not null,
-    passport_number bigint       not null
+    passport_series   varchar(10)  not null,
+    passport_number   varchar(10)  not null
         unique,
-    created         timestamp(6) not null,
-    changed         timestamp(6) not null,
-    expiration_date timestamp(6) not null,
-    user_id         bigint       not null
+    created           timestamp(6) not null,
+    changed           timestamp(6) not null,
+    expiration_date   timestamp(6) not null,
+    user_id           bigint       not null
         constraint personal_doc_users_id_fk
             references public.users
-            on update cascade on delete cascade
+            on update cascade on delete cascade,
+    identification_no varchar(30)  not null
+        unique
 );
 
 alter table public.personal_doc
