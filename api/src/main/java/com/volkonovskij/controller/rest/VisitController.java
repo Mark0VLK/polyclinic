@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -190,6 +192,7 @@ public class VisitController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PostMapping
     public ResponseEntity<Object> saveVisit(@Parameter(hidden = true) @Valid @ModelAttribute VisitCreateRequest request, BindingResult result) {
 
@@ -280,6 +283,7 @@ public class VisitController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PutMapping
     public ResponseEntity<Object> updateVisit(@Parameter(hidden = true) @Valid @ModelAttribute VisitUpdateRequest request) {
 
@@ -302,6 +306,7 @@ public class VisitController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteVisit(@Parameter(name = "id", example = "2", required = true) @PathVariable Long id) {
 

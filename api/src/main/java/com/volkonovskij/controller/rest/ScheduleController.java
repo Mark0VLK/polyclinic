@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -180,6 +182,7 @@ public class ScheduleController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PostMapping
     public ResponseEntity<Object> saveSchedule(@Parameter(hidden = true) @Valid @ModelAttribute ScheduleCreateRequest request, BindingResult result) {
 
@@ -260,6 +263,7 @@ public class ScheduleController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PutMapping
     public ResponseEntity<Object> updateSchedule(@Parameter(hidden = true) @Valid @ModelAttribute ScheduleUpdateRequest request) {
 
@@ -282,6 +286,7 @@ public class ScheduleController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteSchedule(@Parameter(name = "id", example = "2", required = true) @PathVariable Long id) {
 

@@ -202,8 +202,8 @@ public class UserController {
                     )
             }
     )
-    @PostMapping
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @PostMapping
     public ResponseEntity<Object> saveUser(@Parameter(hidden = true) @Valid @ModelAttribute UserCreateRequest request, BindingResult result) {
 
         if (result.hasErrors()) {
@@ -283,6 +283,7 @@ public class UserController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PutMapping
     public ResponseEntity<Object> updateUser(@Parameter(hidden = true) @Valid @ModelAttribute UserUpdateRequest request) {
 
@@ -305,6 +306,7 @@ public class UserController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@Parameter(name = "id", example = "2", required = true) @PathVariable Long id) {
 

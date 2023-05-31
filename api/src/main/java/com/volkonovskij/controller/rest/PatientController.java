@@ -21,6 +21,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -394,6 +396,7 @@ public class PatientController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PostMapping
     public ResponseEntity<Object> savePatient(@Parameter(hidden = true) @Valid @ModelAttribute PatientCreateRequest request, BindingResult result) {
 
@@ -505,6 +508,7 @@ public class PatientController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PutMapping
     public ResponseEntity<Object> updatePatient(@Parameter(hidden = true) @Valid @ModelAttribute PatientUpdateRequest request) {
 
@@ -527,6 +531,7 @@ public class PatientController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @DeleteMapping("/{cardNumber}")
     public ResponseEntity<Object> deletePatient(@Parameter(name = "cardNumber", example = "2", required = true) @PathVariable Long cardNumber) {
 

@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -160,6 +162,7 @@ public class RegionController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PostMapping
     public ResponseEntity<Object> saveRegion(@Parameter(hidden = true) @Valid @ModelAttribute RegionCreateRequest request, BindingResult result) {
 
@@ -220,6 +223,7 @@ public class RegionController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @PutMapping
     public ResponseEntity<Object> updateRegion(@Parameter(hidden = true) @Valid @ModelAttribute RegionUpdateRequest request) {
 
@@ -242,6 +246,7 @@ public class RegionController {
                     )
             }
     )
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteRegion(@Parameter(name = "id", example = "2", required = true) @PathVariable Long id) {
 
