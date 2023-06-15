@@ -1,1 +1,2 @@
 # polyclinic
+This WEB server is developed in the Java high-level programming language using the Spring Framework framework together with Spring Boot and Spring Data, in order to provide the possibility of interaction between the user and the medical institution. It implements work with the graphical interface using Swagger. The WEB server is intended for use in polyclinics and medical institutions.
